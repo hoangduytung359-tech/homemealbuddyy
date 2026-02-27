@@ -1,0 +1,1637 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home Meal Buddy</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* ── Blue theme palette ── */
+  --primary:#1a6fd4;
+  --primary-mid:#3589e8;
+  --primary-light:#76b8f7;
+  --primary-pale:#ddeeff;
+  --cream:#f5faff;
+  --warm:#e09b5a;
+  --warm-light:#fae3c6;
+  --card:#fff;
+  --text:#0d1f3c;
+  --muted:#6080a8;
+  --border:#c8ddf5;
+}
+[data-theme="dark"] {
+  --cream:#0a111e;
+  --card:#131f32;
+  --text:#ffffff;
+  --muted:#a8c4e8;
+  --border:#1e3358;
+  --primary-pale:#0d2248;
+  --primary:#5aabff;
+  --primary-mid:#78bdff;
+  --primary-light:#9dcefd;
+  --warm-light:#2a1f12;
+  --warm:#f0ab6a;
+}
+
+/* ── Dark mode explicit overrides ── */
+[data-theme="dark"] .ings-center h2,
+[data-theme="dark"] .intro-wrap h2,
+[data-theme="dark"] .feat-card h4,
+[data-theme="dark"] .rp-header h3,
+[data-theme="dark"] .detail-section h3,
+[data-theme="dark"] .rc-body h4,
+[data-theme="dark"] .nut-val {
+  color:#fff !important;
+}
+[data-theme="dark"] .ings-center .sub,
+[data-theme="dark"] .intro-wrap .lead,
+[data-theme="dark"] .feat-card p,
+[data-theme="dark"] .rc-body p,
+[data-theme="dark"] .step-text,
+[data-theme="dark"] .nut-lbl,
+[data-theme="dark"] .sug-section p,
+[data-theme="dark"] .side-tip-card ul li,
+[data-theme="dark"] .side-deco-card p {
+  color:#c8ddf5 !important;
+}
+[data-theme="dark"] .sug-chip {
+  color:#c8ddf5;
+  background:#131f32;
+  border-color:#1e3358;
+}
+[data-theme="dark"] .sug-chip:hover {
+  color:#fff;
+  background:#0d2248;
+  border-color:#5aabff;
+}
+[data-theme="dark"] .rc {
+  background:#131f32;
+}
+[data-theme="dark"] .rc:hover {
+  border-color:#5aabff;
+  box-shadow:0 16px 36px rgba(90,171,255,.18);
+}
+[data-theme="dark"] .filter-chip {
+  background:#131f32;
+  color:#c8ddf5;
+  border-color:#1e3358;
+}
+[data-theme="dark"] .filter-chip:hover,
+[data-theme="dark"] .filter-chip.active {
+  background:#0d2248;
+  color:#fff;
+  border-color:#5aabff;
+}
+[data-theme="dark"] .ing-input-row input {
+  background:#0a111e;
+  color:#fff;
+  border-color:#1e3358;
+}
+[data-theme="dark"] .ing-input-row input::placeholder { color:#6890b8; }
+[data-theme="dark"] .ing-input-row input:focus { border-color:#5aabff; box-shadow:0 0 0 3px rgba(90,171,255,.15); }
+[data-theme="dark"] .ing-tag {
+  background:#0d2248;
+  color:#9dcefd;
+  border-color:#2a4a80;
+}
+[data-theme="dark"] .ing-tag button { color:#9dcefd; }
+[data-theme="dark"] .ing-pill {
+  background:#0d2248;
+  color:#9dcefd;
+  border-color:#2a4a80;
+}
+[data-theme="dark"] .side-deco-card h5 { color:#9dcefd; }
+[data-theme="dark"] .side-tip-card h5 { color:#9dcefd; }
+[data-theme="dark"] .side-tip-card ul li::before { color:#5aabff; }
+[data-theme="dark"] .season-card {
+  background:#1e1408;
+  border-color:rgba(224,155,90,.2);
+}
+[data-theme="dark"] .season-card h5 { color:#f0ab6a; }
+[data-theme="dark"] .season-card p { color:#c8996a; }
+[data-theme="dark"] .tip-box {
+  background:#1e1408;
+  border-color:rgba(240,171,106,.25);
+}
+[data-theme="dark"] .tip-box h3 { color:#f0ab6a !important; }
+[data-theme="dark"] .tip-box p { color:#c8996a; }
+[data-theme="dark"] .nut-item { background:#0a111e; border-color:#1e3358; }
+[data-theme="dark"] .intro-quote {
+  background:#0d2248;
+  color:#9dcefd;
+  border-color:#5aabff;
+}
+[data-theme="dark"] .empty-hint { color:#a8c4e8; }
+[data-theme="dark"] .bw { background:#2a1f12; color:#f0ab6a; }
+[data-theme="dark"] .bg { background:#0d2248; color:#9dcefd; }
+[data-theme="dark"] .badge[style*="rgba(26,111,212"] {
+  background:rgba(90,171,255,.15) !important;
+  color:#9dcefd !important;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--text);transition:.4s;overflow-x:hidden}
+
+/* ── HEADER ── */
+header{
+  position:fixed;top:0;left:0;right:0;z-index:9999;height:66px;
+  background:rgba(245,250,255,.94);backdrop-filter:blur(16px);
+  border-bottom:1.5px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 44px;transition:.4s;
+}
+[data-theme="dark"] header{background:rgba(13,24,39,.94)}
+.logo{font-weight:900;font-size:1.4rem;color:var(--primary);cursor:pointer;display:flex;align-items:center;gap:7px}
+.logo b{color:var(--primary-light)}
+.nav-right{display:flex;align-items:center;gap:10px}
+.nav-link{font-size:.9rem;font-weight:700;color:var(--muted);cursor:pointer;padding:7px 16px;border-radius:50px;transition:.2s}
+.nav-link:hover{background:var(--primary-pale);color:var(--primary)}
+.theme-btn{background:var(--primary-pale);border:none;border-radius:50px;padding:7px 16px;cursor:pointer;font-size:.85rem;font-weight:700;color:var(--primary);font-family:'Nunito',sans-serif;transition:.2s}
+.theme-btn:hover{background:var(--primary-light);color:#fff}
+#back-btn{
+  position:fixed;top:80px;left:18px;z-index:9998;display:none;
+  background:var(--card);border:1.5px solid var(--border);border-radius:50px;
+  padding:7px 16px;cursor:pointer;font-size:.85rem;font-weight:700;color:var(--muted);
+  transition:.2s;box-shadow:0 4px 12px rgba(0,0,0,.07);font-family:'Nunito',sans-serif;
+}
+#back-btn:hover{border-color:var(--primary);color:var(--primary)}
+
+/* ── PAGES ── */
+.page{display:none;min-height:100vh;padding-top:66px}
+.page.active{display:block;animation:fadeUp .4s cubic-bezier(.22,1,.36,1)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+/* ══════════════════════════════
+   HOME — DEEP BLUE OMBRE
+══════════════════════════════ */
+#page-home{
+  display:none;flex-direction:column;min-height:100vh;padding-top:0;
+  position:relative;overflow:hidden;
+  background:linear-gradient(160deg,#050e1f 0%,#0a2260 25%,#0f55b8 55%,#2880e0 78%,#55adf5 100%);
+}
+#page-home.active{display:flex}
+#page-home::before{
+  content:'';position:absolute;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(ellipse 70% 50% at 80% 20%,rgba(96,184,248,.2) 0%,transparent 60%),
+    radial-gradient(ellipse 50% 60% at 15% 70%,rgba(29,96,200,.28) 0%,transparent 55%),
+    radial-gradient(ellipse 40% 40% at 55% 90%,rgba(168,216,255,.1) 0%,transparent 50%);
+}
+.star-field{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+.star{position:absolute;border-radius:50%;background:#fff;animation:twinkle var(--d,3s) ease-in-out infinite var(--dl,0s)}
+@keyframes twinkle{0%,100%{opacity:var(--o1,.1);transform:scale(1)}50%{opacity:var(--o2,.6);transform:scale(1.4)}}
+.bg-blob{position:absolute;border-radius:50%;pointer-events:none;z-index:1}
+.blob1{width:520px;height:520px;background:radial-gradient(circle,rgba(45,136,232,.35),transparent 70%);top:-100px;right:-80px;animation:driftBlob 12s ease-in-out infinite}
+.blob2{width:320px;height:320px;background:radial-gradient(circle,rgba(96,192,248,.2),transparent 70%);bottom:180px;left:-60px;animation:driftBlob 9s ease-in-out infinite 3s}
+.blob3{width:200px;height:200px;background:radial-gradient(circle,rgba(168,216,255,.15),transparent 70%);top:40%;left:40%;animation:driftBlob 14s ease-in-out infinite 6s}
+@keyframes driftBlob{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(30px,-20px) scale(1.05)}66%{transform:translate(-20px,30px) scale(.95)}}
+.food-deco{position:absolute;pointer-events:none;user-select:none;animation:floatAnim 5s ease-in-out infinite;z-index:2}
+.food-deco:nth-child(4){font-size:3.5rem;top:14%;right:7%;animation-delay:0s;opacity:.22}
+.food-deco:nth-child(5){font-size:2.2rem;top:52%;right:11%;animation-delay:1.2s;opacity:.18}
+.food-deco:nth-child(6){font-size:2.8rem;top:22%;left:5%;animation-delay:.6s;opacity:.20}
+.food-deco:nth-child(7){font-size:2rem;bottom:28%;left:9%;animation-delay:1.8s;opacity:.16}
+.food-deco:nth-child(8){font-size:4rem;bottom:22%;right:5%;animation-delay:2.2s;opacity:.20}
+@keyframes floatAnim{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-18px) rotate(5deg)}}
+.hero-inner{position:relative;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;text-align:center;padding:80px 24px 20px}
+.hero-pill{display:inline-flex;align-items:center;gap:8px;background:rgba(168,216,255,.14);border:1.5px solid rgba(168,216,255,.32);color:#a8d8ff;font-size:.8rem;font-weight:800;padding:7px 20px;border-radius:50px;margin-bottom:28px;letter-spacing:.8px;text-transform:uppercase}
+#page-home h1{font-size:clamp(3rem,8.5vw,6rem);font-weight:900;line-height:1.1;color:#fff;margin-bottom:22px;text-shadow:0 4px 32px rgba(0,40,120,.4)}
+#page-home h1 em{color:#a8d8ff;font-style:normal;text-shadow:0 0 40px rgba(96,184,248,.5)}
+#page-home .sub{font-size:1.1rem;color:rgba(255,255,255,.7);max-width:500px;line-height:1.8;margin-bottom:44px;font-weight:500}
+.btn-hero{background:linear-gradient(135deg,#2d88e8,#60b8f8);color:#fff;border:none;padding:17px 54px;border-radius:50px;font-size:1.05rem;font-weight:800;cursor:pointer;transition:.3s;font-family:'Nunito',sans-serif;box-shadow:0 10px 32px rgba(45,136,232,.45)}
+.btn-hero:hover{transform:translateY(-4px);box-shadow:0 18px 48px rgba(45,136,232,.6)}
+.home-img-strip{position:relative;z-index:2;height:200px;display:flex;overflow:hidden;margin-top:auto;flex-shrink:0}
+.home-img-strip::before{content:'';position:absolute;top:0;left:0;right:0;height:80px;background:linear-gradient(to bottom,#1055b8,transparent);z-index:2;pointer-events:none}
+.home-img-strip::after{content:'';position:absolute;inset:0;background:rgba(10,22,60,.3);z-index:1;pointer-events:none}
+.strip-img{flex:1;object-fit:cover;min-width:0;filter:saturate(1.1) brightness(.65)}
+
+/* ══════════════════════════════
+   INTRO
+══════════════════════════════ */
+#page-intro{background:var(--cream)}
+.intro-wrap{max-width:780px;margin:0 auto;padding:60px 24px 80px}
+.intro-wrap h2{font-size:2.4rem;font-weight:900;color:var(--primary);margin-bottom:14px}
+.intro-wrap .lead{color:var(--muted);font-size:1.05rem;margin-bottom:40px;line-height:1.8;font-weight:500}
+.intro-img-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:36px}
+.intro-img-row img{width:100%;height:140px;object-fit:cover;border-radius:18px;filter:brightness(.9);transition:.3s}
+.intro-img-row img:hover{transform:scale(1.03);filter:brightness(1)}
+.feature-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:36px}
+.feat-card{background:var(--card);border-radius:22px;padding:26px;border:1.5px solid var(--border);transition:.25s}
+.feat-card:hover{transform:translateY(-4px);box-shadow:0 12px 30px rgba(26,111,212,.1)}
+.feat-icon{font-size:2rem;margin-bottom:14px}
+.feat-card h4{font-weight:800;margin-bottom:8px}
+.feat-card p{font-size:.9rem;color:var(--muted);line-height:1.65;font-weight:500}
+.intro-quote{border-left:5px solid var(--primary);padding:18px 26px;font-size:1.1rem;font-style:italic;font-weight:700;color:var(--primary);background:var(--primary-pale);border-radius:0 18px 18px 0}
+
+/* ══════════════════════════════
+   INPUT PAGE — 3 column layout
+══════════════════════════════ */
+#page-ings{background:var(--cream);position:relative;overflow:hidden}
+#page-ings::before{
+  content:'';position:absolute;inset:0;pointer-events:none;z-index:0;
+  background-image:radial-gradient(circle,rgba(26,111,212,.05) 1px,transparent 1px);
+  background-size:32px 32px;
+}
+.ings-layout{
+  display:grid;
+  grid-template-columns:220px 1fr 220px;
+  gap:0;
+  max-width:1280px;
+  margin:0 auto;
+  padding:56px 24px 80px;
+  position:relative;
+  z-index:1;
+  align-items:start;
+}
+.ings-center h2{font-size:2.4rem;font-weight:900;margin-bottom:10px;color:var(--primary)}
+.ings-center .sub{color:var(--muted);margin-bottom:32px;line-height:1.75;font-weight:500}
+.input-card{background:var(--card);border-radius:28px;padding:36px;border:1.5px solid var(--border);box-shadow:0 12px 40px rgba(26,111,212,.08)}
+.tag-row{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:22px;min-height:42px;align-items:center}
+.ing-tag{display:flex;align-items:center;gap:7px;background:var(--primary-pale);color:var(--primary);border:1.5px solid var(--primary-light);border-radius:50px;padding:7px 16px;font-size:.9rem;font-weight:700;animation:popIn .2s cubic-bezier(.22,1,.36,1)}
+@keyframes popIn{from{transform:scale(.75);opacity:0}to{transform:scale(1);opacity:1}}
+.ing-tag button{background:none;border:none;cursor:pointer;color:var(--primary);font-size:1.1rem;line-height:1;padding:0}
+.ing-tag button:hover{color:#e74c3c}
+.ing-input-row{display:flex;gap:10px}
+.ing-input-row input{flex:1;padding:15px 22px;border:1.5px solid var(--border);border-radius:16px;font-size:1rem;background:var(--cream);color:var(--text);outline:none;transition:.2s;font-family:'Nunito',sans-serif;font-weight:600}
+.ing-input-row input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(26,111,212,.12)}
+.ing-input-row input::placeholder{color:var(--muted);font-weight:500}
+.add-btn{background:var(--primary);color:#fff;border:none;border-radius:16px;padding:14px 24px;font-size:1.4rem;cursor:pointer;transition:.2s;font-weight:700}
+.add-btn:hover{background:var(--primary-mid);transform:scale(1.06)}
+.sug-section{margin-top:20px;border-top:1.5px solid var(--border);padding-top:20px}
+.sug-section p{font-size:.78rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.7px;margin-bottom:10px}
+.sug-chips{display:flex;flex-wrap:wrap;gap:8px}
+.sug-chip{background:var(--cream);border:1.5px solid var(--border);border-radius:50px;padding:6px 15px;font-size:.85rem;cursor:pointer;transition:.2s;font-weight:600;font-family:'Nunito',sans-serif}
+.sug-chip:hover{border-color:var(--primary);color:var(--primary);background:var(--primary-pale)}
+.find-btn{width:100%;margin-top:26px;background:linear-gradient(135deg,var(--primary),var(--primary-mid));color:#fff;border:none;border-radius:18px;padding:18px;font-size:1rem;font-weight:800;cursor:pointer;transition:.3s;font-family:'Nunito',sans-serif;box-shadow:0 8px 20px rgba(26,111,212,.3)}
+.find-btn:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(26,111,212,.42)}
+.find-btn:disabled{background:#b0c8e8;cursor:not-allowed;transform:none;box-shadow:none}
+
+/* ── Side decor ── */
+.side-deco{padding-top:80px;display:flex;flex-direction:column;gap:18px;align-items:center}
+.side-deco-card{background:var(--card);border:1.5px solid var(--border);border-radius:20px;padding:18px 14px;width:100%;text-align:center;transition:.3s}
+.side-deco-card:hover{transform:translateY(-4px);box-shadow:0 12px 28px rgba(26,111,212,.12);border-color:var(--primary-light)}
+.side-deco-card .deco-emoji{font-size:2.4rem;display:block;margin-bottom:8px}
+.side-deco-card h5{font-size:.82rem;font-weight:800;color:var(--primary);margin-bottom:4px}
+.side-deco-card p{font-size:.76rem;color:var(--muted);line-height:1.55;font-weight:500}
+.side-tip-card{background:var(--primary-pale);border:1.5px solid var(--primary-light);border-radius:20px;padding:18px 14px;width:100%}
+.side-tip-card h5{font-size:.8rem;font-weight:800;color:var(--primary);margin-bottom:8px}
+.side-tip-card ul{list-style:none;padding:0}
+.side-tip-card ul li{font-size:.75rem;color:var(--muted);font-weight:600;padding:3px 0;display:flex;align-items:center;gap:5px}
+.side-tip-card ul li::before{content:'✓';color:var(--primary);font-weight:900;font-size:.75rem}
+.stat-pill{background:linear-gradient(135deg,#0a2260,#1460c4);border-radius:20px;padding:20px 14px;width:100%;text-align:center;color:#fff}
+.stat-pill .sp-num{font-size:2rem;font-weight:900;color:#a8d8ff}
+.stat-pill .sp-lbl{font-size:.76rem;font-weight:700;opacity:.8;margin-top:2px}
+.season-card{background:var(--warm-light);border:1.5px solid rgba(224,155,90,.3);border-radius:20px;padding:18px 14px;width:100%;text-align:center}
+.season-card h5{font-size:.8rem;font-weight:800;color:#9a4e1a;margin-bottom:6px}
+.season-card .sc-emoji{font-size:1.8rem;display:block;margin-bottom:6px}
+.season-card p{font-size:.75rem;color:#a05a20;font-weight:500;line-height:1.5}
+
+/* ── RESULTS PANEL ── */
+.results-panel{display:none;margin-top:28px;border-top:1.5px solid var(--border);padding-top:26px;animation:fadeUp .35s ease}
+.results-panel.visible{display:block}
+.rp-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px}
+.rp-header h3{font-size:1.1rem;font-weight:900;display:flex;align-items:center;gap:8px}
+.rp-count{background:var(--primary);color:#fff;border-radius:50px;padding:3px 12px;font-size:.8rem;font-weight:800}
+.rp-filter{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.filter-chip{background:var(--cream);border:1.5px solid var(--border);border-radius:50px;padding:5px 14px;font-size:.82rem;font-weight:700;cursor:pointer;transition:.2s;font-family:'Nunito',sans-serif}
+.filter-chip:hover,.filter-chip.active{background:var(--primary-pale);border-color:var(--primary);color:var(--primary)}
+.rp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+.rc{background:var(--cream);border:1.5px solid var(--border);border-radius:20px;overflow:hidden;cursor:pointer;transition:.3s}
+.rc:hover{transform:translateY(-5px);box-shadow:0 16px 36px rgba(26,111,212,.14);border-color:var(--primary-light)}
+.rc-body{padding:16px}
+.rc-body h4{font-size:1rem;font-weight:800;margin-bottom:6px}
+.rc-body p{font-size:.83rem;color:var(--muted);line-height:1.5;font-weight:500}
+.rc-meta{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+.badge{font-size:.73rem;font-weight:700;padding:4px 11px;border-radius:50px;font-family:'Nunito',sans-serif}
+.bg{background:var(--primary-pale);color:var(--primary)}
+.bw{background:var(--warm-light);color:#9a4e1a}
+.empty-hint{text-align:center;padding:36px 20px;color:var(--muted);font-weight:600;font-size:.95rem}
+
+/* ── EMOJI BANNER (single emoji) ── */
+.rc-emoji-banner{
+  height:140px;display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;flex-shrink:0;
+}
+.rc-emoji-banner .eb-circle{position:absolute;width:100px;height:100px;border-radius:50%;opacity:.18}
+.rc-emoji-banner .eb-icon{
+  font-size:4rem;position:relative;z-index:1;
+  filter:drop-shadow(0 4px 12px rgba(0,0,0,.13));
+  transition:transform .3s cubic-bezier(.34,1.56,.64,1);
+  user-select:none;
+}
+.rc:hover .eb-icon{transform:scale(1.22) rotate(-6deg)}
+
+/* colour themes for banners */
+.eb-man{background:linear-gradient(135deg,#fdf0e0,#fae3c6)}.eb-man .eb-circle{background:#e09b5a}
+.eb-chay{background:linear-gradient(135deg,#e3f0ff,#c8dfff)}.eb-chay .eb-circle{background:#3589e8}
+.eb-ngot{background:linear-gradient(135deg,#fff8e1,#fdecc8)}.eb-ngot .eb-circle{background:#f6b93b}
+.eb-uong{background:linear-gradient(135deg,#e0f0ff,#bbdefe)}.eb-uong .eb-circle{background:#2d88e8}
+.eb-vat{background:linear-gradient(135deg,#eef4ff,#d0e4ff)}.eb-vat .eb-circle{background:#5b9de8}
+.eb-sang{background:linear-gradient(135deg,#e8f2ff,#c5d8f8)}.eb-sang .eb-circle{background:#4a7fd4}
+
+/* ── DETAIL PAGE ── */
+#page-detail{background:var(--cream)}
+.detail-wrap{max-width:860px;margin:0 auto;padding:50px 24px 80px}
+.detail-emoji-hero{
+  border-radius:26px;overflow:hidden;margin-bottom:24px;
+  height:280px;display:flex;align-items:center;justify-content:center;position:relative;
+}
+.detail-emoji-hero .deh-circle{position:absolute;width:220px;height:220px;border-radius:50%;opacity:.2}
+.detail-emoji-hero .deh-icon{
+  font-size:9rem;position:relative;z-index:1;
+  filter:drop-shadow(0 8px 24px rgba(0,0,0,.18));
+  animation:gentleBob 3s ease-in-out infinite;
+}
+@keyframes gentleBob{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-10px) rotate(3deg)}}
+.detail-emoji-hero .deh-title{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(5,15,40,.82));padding:28px 30px 22px;color:#fff}
+.detail-emoji-hero .deh-title h1{font-size:1.9rem;font-weight:900;margin-bottom:8px}
+.detail-section{background:var(--card);border-radius:22px;padding:28px;border:1.5px solid var(--border);margin-bottom:16px}
+.detail-section h3{font-size:1.1rem;font-weight:800;color:var(--primary);margin-bottom:18px;display:flex;align-items:center;gap:8px}
+.ing-list{display:flex;flex-wrap:wrap;gap:10px}
+.ing-pill{background:var(--primary-pale);border:1px solid var(--primary-light);border-radius:50px;padding:7px 16px;font-size:.88rem;font-weight:700;color:var(--primary)}
+.step-item{display:flex;gap:16px;margin-bottom:18px}
+.step-num{width:34px;height:34px;flex-shrink:0;background:linear-gradient(135deg,var(--primary),var(--primary-mid));color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:.9rem}
+.step-text{flex:1;line-height:1.78;padding-top:5px;font-weight:500}
+.nut-row{display:flex;gap:14px;flex-wrap:wrap}
+.nut-item{flex:1;min-width:90px;background:var(--cream);border-radius:16px;padding:18px;text-align:center;border:1px solid var(--border)}
+.nut-val{font-size:1.45rem;font-weight:900;color:var(--primary)}
+.nut-lbl{font-size:.76rem;color:var(--muted);margin-top:5px;font-weight:700}
+.tip-box{background:var(--warm-light);border:1.5px solid rgba(224,155,90,.35);border-radius:18px;padding:20px 24px}
+.tip-box h3{color:#9a4e1a}
+
+/* ── AI BUTTON ── */
+.ai-gen-btn{width:100%;margin-top:20px;background:linear-gradient(135deg,#4a5cf0,#7c50e8);color:#fff;border:none;border-radius:16px;padding:15px;font-size:.95rem;font-weight:800;cursor:pointer;transition:.3s;font-family:'Nunito',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px}
+.ai-gen-btn:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(99,102,241,.35)}
+.ai-gen-btn:disabled{background:#aaa;cursor:not-allowed;transform:none;box-shadow:none}
+.ai-results{margin-top:24px;border-top:1.5px solid var(--border);padding-top:20px}
+.ai-results h4{font-size:.85rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:14px}
+.ai-loading{text-align:center;padding:30px;color:var(--muted);font-weight:600}
+.ai-spinner{width:36px;height:36px;border:3px solid var(--border);border-top-color:#6366f1;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+@media(max-width:900px){
+  .ings-layout{grid-template-columns:1fr;padding:40px 16px 60px}
+  .side-deco{display:none}
+}
+@media(max-width:640px){
+  header{padding:0 18px}
+  .feature-grid,.intro-img-row{grid-template-columns:1fr 1fr}
+  .intro-img-row img:last-child{display:none}
+  #page-home h1{font-size:2.8rem}
+  .detail-emoji-hero{height:220px}
+  .home-img-strip{height:140px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo" onclick="goTo('home')">🍃 Home Meal <b>Buddy</b></div>
+  <div class="nav-right">
+    <div class="nav-link" onclick="goTo('intro')">Giới thiệu</div>
+    <button class="theme-btn" onclick="toggleTheme()">🌓 Giao diện</button>
+  </div>
+</header>
+<button id="back-btn" onclick="goBack()">← Quay lại</button>
+
+<!-- HOME -->
+<section id="page-home" class="page active">
+  <div class="star-field" id="star-field"></div>
+  <div class="bg-blob blob1"></div>
+  <div class="bg-blob blob2"></div>
+  <div class="bg-blob blob3"></div>
+  <div class="food-deco">🥩</div>
+  <div class="food-deco">🍳</div>
+  <div class="food-deco">🥦</div>
+  <div class="food-deco">🍜</div>
+  <div class="food-deco">🍗</div>
+  <div class="hero-inner">
+    <div class="hero-pill">✨ Không cần internet · Hoạt động offline</div>
+    <h1>Home<br>Meal <em>Buddy</em></h1>
+    <p class="sub">Mở tủ lạnh, thấy gì nấu đó — gợi ý tức thì hàng chục món ngon kèm công thức từng bước, không cần mua thêm gì.</p>
+    <button class="btn-hero" onclick="goTo('ings')">🍳 Khám phá ngay</button>
+  </div>
+  <div class="home-img-strip">
+    <img class="strip-img" src="https://images.unsplash.com/photo-1547592180-85f173990554?w=400&q=70" alt="">
+    <img class="strip-img" src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=70" alt="">
+    <img class="strip-img" src="https://images.unsplash.com/photo-1606787366850-de6330128bfc?w=400&q=70" alt="">
+    <img class="strip-img" src="https://images.unsplash.com/photo-1534939561126-855b8675edd7?w=400&q=70" alt="">
+    <img class="strip-img" src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&q=70" alt="">
+  </div>
+</section>
+
+<!-- INTRO -->
+<section id="page-intro" class="page">
+  <div class="intro-wrap">
+    <h2>Người Bạn Trong Bếp Việt 🍀</h2>
+    <p class="lead">Home Meal Buddy ra đời từ câu hỏi muôn thuở: <em>"Hôm nay ăn gì?"</em> Chúng tôi biến nguyên liệu bạn có thành những bữa ăn ngon lành với công thức nấu chi tiết — hoàn toàn hoạt động offline, không cần đăng nhập hay internet.</p>
+    <div class="intro-img-row">
+      <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400&q=80" alt="">
+      <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&q=80" alt="">
+      <img src="https://images.unsplash.com/photo-1563379926898-05f4575a45d8?w=400&q=80" alt="">
+    </div>
+    <div class="feature-grid">
+      <div class="feat-card"><div class="feat-icon">⚡</div><h4>Tức thì, không chờ</h4><p>Nhập nguyên liệu, bấm tìm là thấy kết quả ngay lập tức. Không cần internet, không cần đăng ký.</p></div>
+      <div class="feat-card"><div class="feat-icon">🍽️</div><h4>300+ Công thức</h4><p>Kho dữ liệu phong phú: món mặn, healthy, chay, tráng miệng, đồ uống — đủ phong cách nấu Việt.</p></div>
+      <div class="feat-card"><div class="feat-icon">♻️</div><h4>Chống lãng phí</h4><p>Tận dụng nguyên liệu sẵn có, không để đồ trong tủ lạnh bị hỏng lãng phí.</p></div>
+      <div class="feat-card"><div class="feat-icon">📋</div><h4>Hướng dẫn từng bước</h4><p>Mỗi công thức đều có bước nấu chi tiết, nguyên liệu cần chuẩn bị và mẹo nấu ăn.</p></div>
+    </div>
+    <div class="intro-quote">"Đừng để nguyên liệu trong tủ lạnh bị lãng phí. Hãy để Home Meal Buddy cùng bạn tạo nên cảm hứng!"</div>
+  </div>
+</section>
+
+<!-- INPUT PAGE -->
+<section id="page-ings" class="page">
+  <div class="ings-layout">
+    <!-- LEFT DECO -->
+    <div class="side-deco">
+      <div class="stat-pill">
+        <div class="sp-num">400+</div>
+        <div class="sp-lbl">Công thức có sẵn</div>
+      </div>
+      <div class="side-deco-card">
+        <span class="deco-emoji">🥗</span>
+        <h5>Healthy tips</h5>
+        <p>Thêm rau xanh vào mọi bữa ăn để tăng dinh dưỡng mà không tốn thêm chi phí.</p>
+      </div>
+      <div class="side-tip-card">
+        <h5>💡 Bí kíp tủ lạnh</h5>
+        <ul>
+          <li>Trứng — đa năng nhất</li>
+          <li>Hành tỏi — nền vị cơ bản</li>
+          <li>Cà chua — chua ngọt tự nhiên</li>
+          <li>Đậu phụ — protein chay ngon</li>
+          <li>Rau cải — xào 5 phút xong ngay</li>
+        </ul>
+      </div>
+      <div class="side-deco-card">
+        <span class="deco-emoji">🍳</span>
+        <h5>Kỹ thuật cơ bản</h5>
+        <p>Lửa lớn xào nhanh giữ giòn. Lửa nhỏ kho lâu cho mềm. Biết điều này là nấu được hầu hết mọi món!</p>
+      </div>
+    </div>
+
+    <!-- CENTRE -->
+    <div class="ings-center">
+      <h2>🧺 Tủ lạnh bạn có gì?</h2>
+      <p class="sub">Thêm nguyên liệu vào rồi bấm "Tìm món ăn" — hệ thống sẽ gợi ý tất cả các món có thể nấu. Bạn cũng có thể dùng AI để tạo thêm công thức mới!</p>
+      <div class="input-card">
+        <div class="tag-row" id="tag-row">
+          <span style="color:var(--muted);font-size:.88rem;font-weight:600">Chưa có nguyên liệu nào...</span>
+        </div>
+        <div class="ing-input-row">
+          <input id="ing-input" type="text" placeholder="Nhập nguyên liệu (VD: trứng, thịt heo, cà chua...)" onkeydown="if(event.key==='Enter')addIng()">
+          <button class="add-btn" onclick="addIng()">+</button>
+        </div>
+        <div class="sug-section">
+          <p>Gợi ý nhanh</p>
+          <div class="sug-chips">
+            <span class="sug-chip" onclick="qs('Trứng')">🥚 Trứng</span>
+            <span class="sug-chip" onclick="qs('Thịt heo')">🐷 Thịt heo</span>
+            <span class="sug-chip" onclick="qs('Gà')">🍗 Gà</span>
+            <span class="sug-chip" onclick="qs('Thịt bò')">🥩 Thịt bò</span>
+            <span class="sug-chip" onclick="qs('Tôm')">🦐 Tôm</span>
+            <span class="sug-chip" onclick="qs('Cá')">🐟 Cá</span>
+            <span class="sug-chip" onclick="qs('Mực')">🦑 Mực</span>
+            <span class="sug-chip" onclick="qs('Đậu phụ')">🟨 Đậu phụ</span>
+            <span class="sug-chip" onclick="qs('Khoai tây')">🥔 Khoai tây</span>
+            <span class="sug-chip" onclick="qs('Cà chua')">🍅 Cà chua</span>
+            <span class="sug-chip" onclick="qs('Rau cải')">🥬 Rau cải</span>
+            <span class="sug-chip" onclick="qs('Nấm')">🍄 Nấm</span>
+            <span class="sug-chip" onclick="qs('Hành tây')">🧅 Hành tây</span>
+            <span class="sug-chip" onclick="qs('Ngô')">🌽 Ngô</span>
+            <span class="sug-chip" onclick="qs('Bơ')">🥑 Bơ</span>
+            <span class="sug-chip" onclick="qs('Chuối')">🍌 Chuối</span>
+            <span class="sug-chip" onclick="qs('Dâu tây')">🍓 Dâu tây</span>
+            <span class="sug-chip" onclick="qs('Sữa chua')">🥛 Sữa chua</span>
+            <span class="sug-chip" onclick="qs('Thịt bằm')">🥩 Thịt bằm</span>
+          </div>
+        </div>
+        <button class="find-btn" id="find-btn" onclick="findDishes()" disabled>🔍 Tìm món ăn</button>
+        <!-- RESULTS PANEL -->
+        <div class="results-panel" id="results-panel">
+          <div class="rp-header">
+            <h3>🍽️ Món có thể nấu <span class="rp-count" id="rp-count">0 món</span></h3>
+          </div>
+          <div class="rp-filter" id="rp-filter"></div>
+          <div class="rp-grid" id="rp-grid"></div>
+          <div class="ai-results" id="ai-results" style="display:none">
+            <h4>✨ Công thức mới từ AI <span style="background:rgba(99,102,241,.12);color:#6366f1;border-radius:50px;padding:2px 10px;font-size:.75rem" id="ai-count"></span></h4>
+            <div id="ai-grid" class="rp-grid"></div>
+          </div>
+          <button class="ai-gen-btn" id="ai-gen-btn" onclick="generateWithAI()">✨ Dùng AI tạo thêm công thức mới</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT DECO -->
+    <div class="side-deco">
+      <div class="season-card">
+        <span class="sc-emoji">🌤️</span>
+        <h5>Gợi ý mùa này</h5>
+        <p>Canh chua, gỏi cuốn, chè đậu xanh — nhẹ nhàng mát lành cho những ngày oi bức.</p>
+      </div>
+      <div class="side-deco-card">
+        <span class="deco-emoji">⏱️</span>
+        <h5>Nấu nhanh dưới 15 phút</h5>
+        <p>Trứng ốp la, rau xào tỏi, canh đậu phụ — bữa cơm hoàn chỉnh trong thời gian ngắn.</p>
+      </div>
+      <div class="side-tip-card">
+        <h5>🔥 Gia vị nền tảng</h5>
+        <ul>
+          <li>Nước mắm — linh hồn Việt</li>
+          <li>Tương hào — umami đậm đà</li>
+          <li>Dầu mè — thơm ngay tức thì</li>
+          <li>Tiêu hạt — hơn bột nhiều lần</li>
+          <li>Đường cát — cân bằng vị mặn</li>
+        </ul>
+      </div>
+      <div class="side-deco-card">
+        <span class="deco-emoji">♻️</span>
+        <h5>Zero Waste Kitchen</h5>
+        <p>Đầu hành, vỏ gừng, xương gà — tất cả đều có thể làm nước dùng thơm ngon!</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DETAIL PAGE -->
+<section id="page-detail" class="page">
+  <div class="detail-wrap" id="detail-wrap"></div>
+</section>
+
+<!-- AI KEY MODAL -->
+<div id="key-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99999;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)">
+  <div style="background:var(--card);border-radius:28px;padding:36px;max-width:480px;width:100%;box-shadow:0 24px 60px rgba(0,0,0,.2);animation:fadeUp .3s ease">
+    <h3 style="font-size:1.3rem;font-weight:900;margin-bottom:8px">🤖 Tính năng AI</h3>
+    <p style="color:var(--muted);font-size:.9rem;line-height:1.65;margin-bottom:20px;font-weight:500">Để dùng AI tạo công thức mới, nhập Anthropic API key.<br>Lấy miễn phí tại: <a href="https://console.anthropic.com" target="_blank" style="color:var(--primary);font-weight:700">console.anthropic.com</a></p>
+    <div style="position:relative;margin-bottom:16px">
+      <input type="password" id="key-input" placeholder="sk-ant-api03-..." spellcheck="false" style="width:100%;padding:14px 48px 14px 18px;border:1.5px solid var(--border);border-radius:14px;font-size:.95rem;background:var(--cream);color:var(--text);outline:none;font-family:'Nunito',sans-serif;font-weight:600">
+      <button onclick="toggleKeyVis()" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:1.1rem;color:var(--muted)">👁</button>
+    </div>
+    <div style="display:flex;gap:10px">
+      <button onclick="closeModal()" style="background:var(--cream);border:1.5px solid var(--border);border-radius:14px;padding:14px 20px;font-size:.95rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;color:var(--muted)">Huỷ</button>
+      <button onclick="saveKey()" style="flex:1;background:var(--primary);color:#fff;border:none;border-radius:14px;padding:14px;font-size:.95rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif">💾 Lưu và dùng AI</button>
+    </div>
+    <div id="key-status" style="display:none;align-items:center;gap:8px;font-size:.82rem;font-weight:700;margin-top:10px"></div>
+  </div>
+</div>
+
+<script>
+// ── star field ──
+(function(){
+  const sf=document.getElementById('star-field');
+  for(let i=0;i<80;i++){
+    const s=document.createElement('div');s.className='star';
+    const sz=Math.random()*3+1;
+    s.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${2+Math.random()*4}s;--dl:${Math.random()*4}s;--o1:${.05+Math.random()*.15};--o2:${.3+Math.random()*.5}`;
+    sf.appendChild(s);
+  }
+})();
+
+// ══════════════════════════════════════════════
+// DATABASE — single emoji per dish
+// ══════════════════════════════════════════════
+const DB = [
+// ─── TRỨNG ───
+{name:"Trứng luộc",       emoji:"🥚", catcls:"eb-man",  keys:["trứng"],cat:"Mặn",  time:"10 phút",cal:155,diff:"Dễ",
+ desc:"Món đơn giản nhưng bổ dưỡng, phù hợp mọi bữa.",
+ ings:["3 quả trứng","nước","muối"],
+ steps:["Cho trứng vào nồi, đổ nước ngập trứng, thêm 1 thìa muối.","Đun sôi ở lửa vừa. Khi sôi, vặn lửa nhỏ.","Trứng lòng đào: luộc 6-7 phút. Trứng chín hoàn toàn: 10-12 phút.","Vớt ra ngâm ngay vào nước lạnh 2 phút để dễ bóc.","Bóc vỏ và thưởng thức."],
+ tip:"Ngâm nước lạnh sau khi luộc giúp bóc vỏ dễ hơn và tránh lòng đỏ bị xanh."},
+
+{name:"Trứng ốp la",      emoji:"🍳", catcls:"eb-man",  keys:["trứng"],cat:"Mặn",  time:"5 phút", cal:185,diff:"Dễ",
+ desc:"Trứng chiên mặt, lòng đỏ béo mềm ăn với cơm hay bánh mì đều ngon.",
+ ings:["2 quả trứng","1 thìa dầu ăn","muối","tiêu"],
+ steps:["Làm nóng chảo ở lửa vừa, cho dầu vào.","Đập trứng nhẹ nhàng vào chảo, tránh vỡ lòng đỏ.","Rắc chút muối và tiêu lên trên.","Chiên 2-3 phút đến khi lòng trắng chín, lòng đỏ vẫn mềm.","Gắp ra đĩa, ăn nóng với cơm hoặc bánh mì."],
+ tip:"Dùng lửa vừa-nhỏ để lòng trắng chín đều mà lòng đỏ không bị cứng."},
+
+{name:"Trứng chiên hành lá", emoji:"🧅", catcls:"eb-man", keys:["trứng"],cat:"Mặn",time:"8 phút",cal:210,diff:"Dễ",
+ desc:"Trứng chiên thơm hành, vàng đẹp và đậm đà.",
+ ings:["3 quả trứng","2 nhánh hành lá","muối","tiêu","dầu ăn"],
+ steps:["Đập trứng vào bát, thêm muối tiêu, đánh đều.","Hành lá rửa sạch, thái nhỏ, cho vào hỗn hợp trứng.","Làm nóng chảo với dầu ở lửa vừa.","Đổ hỗn hợp trứng vào, để yên 1-2 phút đến khi mặt dưới chín vàng.","Lật mặt hoặc gấp lại, chiên thêm 1 phút. Gắp ra ăn nóng."],
+ tip:"Không khuấy nhiều sẽ tạo thành miếng to đẹp hơn."},
+
+{name:"Trứng hấp hành lá", emoji:"🫕", catcls:"eb-man", keys:["trứng"],cat:"Mặn",time:"15 phút",cal:165,diff:"Dễ",
+ desc:"Trứng hấp mềm mịn kiểu Việt, ăn với cơm trắng cực ngon.",
+ ings:["3 quả trứng","150ml nước ấm","2 nhánh hành lá","1 thìa nước mắm","tiêu"],
+ steps:["Đánh trứng với nước ấm theo tỷ lệ 1:1, thêm nước mắm và tiêu.","Lọc qua rây để hỗn hợp mịn, bỏ bọt.","Hành lá thái nhỏ, rải vào bát trứng.","Bọc màng bọc thực phẩm hoặc đậy đĩa, hấp cách thủy 12-15 phút ở lửa vừa.","Kiểm tra bằng cách chọc tăm — nếu khô là chín. Ăn nóng với cơm."],
+ tip:"Hấp lửa nhỏ-vừa để mặt trứng mịn không bị rỗ."},
+
+{name:"Trứng kho tiêu",   emoji:"🌶️", catcls:"eb-man",  keys:["trứng"],cat:"Mặn",  time:"20 phút",cal:240,diff:"Dễ",
+ desc:"Trứng kho nước màu đậm đà, vị mặn ngọt, ăn với cơm rất đưa.",
+ ings:["4 quả trứng","2 thìa nước mắm","1 thìa đường","tiêu hạt","hành tím","nước màu"],
+ steps:["Luộc trứng chín, bóc vỏ. Dùng đầu dao khứa nhẹ bề mặt cho ngấm gia vị.","Phi hành tím vàng thơm với chút dầu.","Cho nước mắm, đường, nước màu vào, đun sôi tạo nước kho.","Cho trứng vào, kho lửa nhỏ 10-15 phút, thỉnh thoảng lật đều.","Thêm tiêu hạt giã dập, kho thêm 5 phút đến khi nước sánh."],
+ tip:"Khứa bề mặt trứng giúp gia vị thấm sâu hơn và trứng đẹp màu hơn."},
+
+{name:"Trứng bác cà chua", emoji:"🍅", catcls:"eb-man", keys:["trứng","cà chua"],cat:"Mặn",time:"12 phút",cal:200,diff:"Dễ",
+ desc:"Món xào nhà dân dã, vị chua ngọt hài hòa.",
+ ings:["3 quả trứng","2 quả cà chua","hành lá","muối","đường","dầu ăn"],
+ steps:["Đánh trứng, chiên tới chín rồi xúc ra để riêng.","Cà chua bổ múi cau, phi hành thơm rồi xào cà chua.","Nêm muối, đường, đảo đều đến khi cà chua mềm ra nước.","Cho trứng vào, đảo nhẹ tay 1-2 phút cho quyện.","Rắc hành lá, nêm lại cho vừa ăn, trút ra đĩa."],
+ tip:"Chiên trứng trước rồi mới xào cà chua giúp trứng không bị nát."},
+
+{name:"Trứng cuộn hành lá", emoji:"🌯", catcls:"eb-man", keys:["trứng"],cat:"Mặn",time:"10 phút",cal:195,diff:"Trung bình",
+ desc:"Cuộn trứng mỏng đẹp mắt như nhà hàng.",
+ ings:["3 quả trứng","2 nhánh hành lá","muối","tiêu","dầu ăn"],
+ steps:["Đánh trứng với muối tiêu, thêm hành lá thái nhỏ.","Làm nóng chảo chống dính nhỏ, phết dầu mỏng.","Đổ 1/3 hỗn hợp trứng, tráng mỏng đều chảo lửa nhỏ.","Khi mặt trên bắt đầu se, dùng đũa cuộn tròn từ một đầu.","Đẩy phần cuộn sang mép, tiếp tục tráng lớp trứng mới và cuộn vào. Lặp lại đến hết. Cắt khúc vừa ăn."],
+ tip:"Lửa nhỏ và chảo chống dính là bí quyết để cuộn đẹp không rách."},
+
+{name:"Trứng ngâm tương",  emoji:"🫙", catcls:"eb-man",  keys:["trứng"],cat:"Mặn",  time:"30 phút",cal:180,diff:"Dễ",
+ desc:"Trứng ngâm nước tương Nhật mềm ngon, lòng đào thấm gia vị.",
+ ings:["4 quả trứng","4 thìa nước tương","2 thìa mirin","1 thìa đường","100ml nước"],
+ steps:["Luộc trứng 6-7 phút để lòng đào, ngâm nước lạnh, bóc vỏ.","Pha hỗn hợp nước tương, mirin, đường, nước — đun sôi tan đường, để nguội.","Cho trứng vào túi zip hoặc hộp, đổ nước ngâm vào.","Ngâm tủ lạnh ít nhất 4 tiếng, tốt nhất qua đêm.","Cắt đôi, ăn với cơm hoặc mì."],
+ tip:"Ngâm càng lâu trứng càng ngấm đậm, nhưng không quá 3 ngày."},
+
+{name:"Bánh flan trứng",   emoji:"🍮", catcls:"eb-ngot", keys:["trứng","sữa"],cat:"Ngọt",time:"50 phút",cal:280,diff:"Trung bình",
+ desc:"Bánh flan mềm mịn, thơm vani, phủ lớp caramel vàng óng.",
+ ings:["3 quả trứng","300ml sữa tươi","50g đường","1/2 thìa vani","50g đường làm caramel"],
+ steps:["Làm caramel: đun 50g đường với 2 thìa nước đến vàng nâu, đổ vào khuôn.","Đánh nhẹ trứng với đường, không tạo bọt.","Đun sữa ấm khoảng 60°C, từ từ đổ vào trứng vừa khuấy.","Thêm vani, lọc qua rây, đổ vào khuôn đã có caramel.","Hấp cách thủy 35-40 phút ở lửa nhỏ. Để nguội, lật ngược ra đĩa."],
+ tip:"Đừng đánh trứng quá mạnh — bọt khí sẽ làm bánh bị rỗ mặt."},
+
+// ─── THỊT HEO ───
+{name:"Thịt heo luộc",     emoji:"🍽️", catcls:"eb-man",  keys:["thịt heo","thịt lợn"],cat:"Mặn",time:"30 phút",cal:280,diff:"Dễ",
+ desc:"Thịt luộc chín mềm, chấm mắm tỏi ớt đặc trưng miền Trung.",
+ ings:["400g thịt ba chỉ hoặc nạc vai","hành tím","gừng","muối","nước mắm","tỏi","ớt","chanh"],
+ steps:["Rửa thịt, cho vào nồi nước lạnh cùng hành tím và gừng đập dập.","Đun sôi, hớt bọt kỹ, vặn lửa nhỏ.","Luộc 25-30 phút đến khi dùng đũa xiên qua không ra nước hồng.","Vớt ra, để nguội bớt rồi thái lát mỏng.","Pha nước chấm: nước mắm, chanh, đường, tỏi ớt băm."],
+ tip:"Cho thịt vào nước lạnh đun cùng để thịt chín từ từ, ngọt hơn."},
+
+{name:"Thịt rang cháy cạnh", emoji:"🥩", catcls:"eb-man", keys:["thịt heo","thịt lợn"],cat:"Mặn",time:"25 phút",cal:420,diff:"Dễ",
+ desc:"Thịt ba chỉ chiên vàng giòn cạnh, ăn với cơm trắng không thể cưỡng lại.",
+ ings:["300g thịt ba chỉ","2 thìa nước mắm","1 thìa đường","tỏi","tiêu","dầu ăn"],
+ steps:["Thịt ba chỉ thái miếng vừa ăn, ướp nước mắm, đường, tỏi băm, tiêu 15 phút.","Làm nóng chảo với ít dầu ở lửa lớn.","Cho thịt vào, KHÔNG đảo ngay — để thịt tự chín vàng một mặt 3-4 phút.","Lật thịt, rang tiếp mặt còn lại đến khi vàng cháy cạnh.","Hạ lửa nhỏ, đảo đều 2-3 phút cho thấm gia vị. Gắp ra đĩa."],
+ tip:"Không đậy nắp — hơi nước làm thịt bị hầm thay vì chiên giòn cạnh."},
+
+{name:"Thịt kho tàu",       emoji:"🥥", catcls:"eb-man",  keys:["thịt heo","thịt lợn","trứng"],cat:"Mặn",time:"60 phút",cal:480,diff:"Trung bình",
+ desc:"Thịt kho nước dừa đậm đà, trứng ngấm màu vàng óng — đặc sản ngày Tết.",
+ ings:["500g thịt ba chỉ","4 quả trứng","1 trái dừa tươi","3 thìa nước mắm","2 thìa đường","hành tím","nước màu"],
+ steps:["Thịt cắt khối vuông 4x4cm, trứng luộc chín bóc vỏ.","Phi hành tím vàng, cho thịt vào xào săn 5 phút.","Thêm nước mắm, đường, nước màu, đảo đều cho thịt lên màu.","Đổ nước dừa tươi vào ngập thịt, đun sôi rồi hạ lửa nhỏ.","Kho 40-50 phút, cho trứng vào kho cùng 15 phút cuối. Nêm lại cho vừa ăn."],
+ tip:"Kho lửa liu riu để thịt mềm tan mà không bị khô."},
+
+{name:"Sườn nướng mật ong", emoji:"🍖", catcls:"eb-man",  keys:["thịt heo","thịt lợn"],cat:"Mặn",time:"45 phút",cal:450,diff:"Trung bình",
+ desc:"Sườn nướng mật ong thơm lừng, bóng đẹp và ngọt dịu.",
+ ings:["500g sườn non","3 thìa mật ong","2 thìa nước tương","1 thìa tỏi băm","1 thìa gừng băm","tiêu"],
+ steps:["Sườn rửa sạch, chần qua nước sôi 2 phút rồi vớt ra để ráo.","Pha nước ướp: mật ong, nước tương, tỏi, gừng, tiêu, trộn đều.","Ướp sườn ít nhất 30 phút (tốt nhất 2-4 tiếng trong tủ lạnh).","Nướng ở 200°C trong 20 phút, lật mặt và nướng thêm 15 phút.","Phết lớp ướp lên mặt sườn, nướng thêm 5 phút đến khi bóng đẹp."],
+ tip:"Chần sườn trước giúp loại bỏ mùi hôi và tạp chất."},
+
+{name:"Chả giò thịt heo",   emoji:"🌮", catcls:"eb-man",  keys:["thịt heo","thịt lợn","thịt bằm"],cat:"Mặn",time:"40 phút",cal:320,diff:"Trung bình",
+ desc:"Chả giò giòn tan bên ngoài, nhân thịt thơm ngon bên trong.",
+ ings:["200g thịt heo bằm","bánh tráng cuốn chả giò","50g miến","cà rốt bào sợi","hành tím","trứng","muối","tiêu","nước mắm"],
+ steps:["Miến ngâm mềm cắt ngắn. Trộn thịt heo bằm với miến, cà rốt, hành tím băm, trứng, nước mắm, tiêu.","Trải bánh tráng, cho nhân vào rồi cuộn chặt.","Chiên ngập dầu ở 160°C khoảng 5-6 phút đến vàng sơ.","Nâng nhiệt lên 180°C, chiên thêm 2-3 phút cho vàng giòn.","Vớt ra để ráo dầu, ăn với rau sống và nước chấm."],
+ tip:"Chiên hai lần giúp chả giò giòn lâu hơn."},
+
+{name:"Cơm tấm sườn bì",    emoji:"🍚", catcls:"eb-man",  keys:["thịt heo","thịt lợn"],cat:"Mặn",time:"50 phút",cal:620,diff:"Trung bình",
+ desc:"Cơm tấm đặc trưng Sài Gòn với sườn nướng thơm ngon.",
+ ings:["300g sườn non","200g gạo tấm","bì lợn","mỡ hành","đồ chua","nước mắm pha"],
+ steps:["Ướp sườn với nước mắm, đường, tỏi, sả, dầu ăn ít nhất 2 tiếng.","Nấu cơm tấm dẻo vừa.","Nướng sườn trên bếp than hoặc lò nướng đến khi vàng thơm.","Làm mỡ hành: phi hành thơm với dầu, thêm mỡ lợn.","Dọn cơm ra đĩa, bày sườn, bì, chan mỡ hành. Ăn kèm nước mắm pha."],
+ tip:"Ướp sườn qua đêm trong tủ lạnh để gia vị thấm sâu."},
+
+{name:"Canh sườn khoai tây", emoji:"🥣", catcls:"eb-man", keys:["thịt heo","thịt lợn","khoai tây"],cat:"Mặn",time:"40 phút",cal:320,diff:"Dễ",
+ desc:"Canh ngọt thanh, khoai bở mềm, sườn mềm thơm.",
+ ings:["400g sườn non","2 củ khoai tây","hành tím","muối","nước mắm","hành lá","tiêu"],
+ steps:["Sườn chặt miếng, chần qua nước sôi 2 phút, rửa sạch.","Khoai tây gọt vỏ, cắt khúc vừa ăn.","Cho sườn vào nồi nước 1.5L, đun sôi hớt bọt, thêm hành tím.","Hầm lửa nhỏ 20 phút, cho khoai tây vào hầm thêm 15 phút.","Nêm nước mắm, muối cho vừa ăn. Rắc hành lá và tiêu."],
+ tip:"Không đậy nắp khi hầm xương để nước dùng trong hơn."},
+
+// ─── GÀ ───
+{name:"Gà luộc lá chanh",   emoji:"🍗", catcls:"eb-man",  keys:["gà"],cat:"Mặn",time:"35 phút",cal:290,diff:"Dễ",
+ desc:"Gà luộc thơm lá chanh, chấm muối tiêu chanh truyền thống.",
+ ings:["1/2 con gà","lá chanh","gừng","sả","muối","tiêu xanh","chanh"],
+ steps:["Rửa gà, nhồi gừng đập dập và sả vào bên trong.","Cho gà vào nồi nước lạnh, thêm muối, đun sôi hớt bọt.","Hạ lửa nhỏ, luộc 25-30 phút đến khi dùng đũa xiên vào đùi không ra nước hồng.","Tắt bếp, ngâm gà trong nồi thêm 10 phút.","Thái lát, rải lá chanh thái sợi. Pha muối tiêu chanh để chấm."],
+ tip:"Đừng đun sôi quá mạnh — gà sẽ bị chai và khô."},
+
+{name:"Gà chiên nước mắm",  emoji:"🧄", catcls:"eb-man",  keys:["gà"],cat:"Mặn",time:"30 phút",cal:380,diff:"Dễ",
+ desc:"Gà chiên vàng giòn, phủ nước mắm tỏi sả thơm lừng.",
+ ings:["500g gà (đùi/cánh)","3 thìa nước mắm","1 thìa đường","3 tép tỏi","1 cây sả","ớt","dầu chiên"],
+ steps:["Gà rửa sạch, khứa vài đường, ướp nước mắm, đường, tỏi sả băm 20 phút.","Chiên gà ngập dầu 170°C khoảng 8-10 phút đến vàng đều.","Vớt ra để ráo. Phi tỏi sả ớt thơm trong 2 thìa dầu còn lại.","Cho gà vào, đảo đều với hỗn hợp tỏi sả.","Thêm 1 thìa nước mắm, đảo nhanh 1-2 phút cho bám đều. Gắp ra đĩa."],
+ tip:"Khứa da gà giúp gia vị thấm và da chiên giòn hơn."},
+
+{name:"Gà kho sả ớt",       emoji:"🌿", catcls:"eb-man",  keys:["gà"],cat:"Mặn",time:"30 phút",cal:340,diff:"Dễ",
+ desc:"Gà kho sả ớt đậm đà cay nồng, ăn với cơm trắng tuyệt vời.",
+ ings:["500g gà","3 cây sả","3 quả ớt","3 thìa nước mắm","1 thìa đường","hành tím","tỏi"],
+ steps:["Gà chặt miếng, ướp nước mắm, đường, sả ớt băm 15 phút.","Phi hành tím tỏi vàng thơm.","Cho gà vào xào lửa lớn đến khi thịt săn và lên màu vàng.","Thêm sả và ớt thái lát, đảo đều.","Thêm 100ml nước, kho lửa nhỏ 15-20 phút đến khi nước cạn. Nêm lại."],
+ tip:"Sả nên đập dập và thái lát để thơm hơn khi kho."},
+
+{name:"Cháo gà gừng",        emoji:"🫚", catcls:"eb-man",  keys:["gà"],cat:"Mặn",time:"45 phút",cal:260,diff:"Dễ",
+ desc:"Cháo gà bổ dưỡng thơm gừng, ăn khi ốm hay trời lạnh đều tuyệt.",
+ ings:["300g gà","100g gạo","gừng tươi","hành lá","muối","nước mắm","tiêu"],
+ steps:["Luộc gà với gừng đập dập đến chín, vớt ra để nguội.","Lọc lấy nước luộc gà làm nước dùng.","Xé thịt gà, cho gạo vào nước dùng đun sôi.","Đun khoảng 25-30 phút đến khi gạo nở bung, khuấy đều.","Cho thịt gà vào, nêm nước mắm muối. Múc ra tô, rắc hành lá, tiêu, gừng sợi."],
+ tip:"Dùng gạo cũ đã vo ráo để cháo đặc ngon hơn."},
+
+{name:"Gà nướng mật ong",    emoji:"🍯", catcls:"eb-man",  keys:["gà"],cat:"Mặn",time:"60 phút",cal:420,diff:"Trung bình",
+ desc:"Gà nướng bóng đẹp, thơm mật ong, vàng ruộm hấp dẫn.",
+ ings:["1/2 con gà","3 thìa mật ong","2 thìa nước tương","1 thìa dầu mè","tỏi gừng băm","tiêu"],
+ steps:["Pha nước ướp: mật ong, nước tương, dầu mè, tỏi gừng.","Rửa gà khô, ướp đều khắp mình kể cả bên trong, ướp 2-3 tiếng.","Làm nóng lò 200°C, đặt gà vào khay có giá.","Nướng 35 phút, lật và phết thêm nước ướp, nướng tiếp 20-25 phút.","Kiểm tra: xiên vào đùi không ra nước hồng là chín. Để nghỉ 10 phút trước khi thái."],
+ tip:"Để gà nghỉ sau nướng giúp nước trong thịt phân bố đều, thịt mọng hơn."},
+
+{name:"Phở gà",               emoji:"🍜", catcls:"eb-man",  keys:["gà"],cat:"Mặn",time:"60 phút",cal:380,diff:"Trung bình",
+ desc:"Phở gà nước dùng trong ngọt tự nhiên, thơm hoa hồi và quế.",
+ ings:["1/2 con gà","300g bánh phở","hành tây","gừng","hoa hồi","quế","muối","nước mắm","hành lá","giá đỗ","chanh","ớt"],
+ steps:["Nướng hành tây và gừng trên bếp đến thơm, rửa sơ.","Hầm gà với hành tây, gừng, hoa hồi, quế trong 40 phút.","Vớt gà, lọc nước dùng cho trong, nêm nước mắm muối.","Xé thịt gà. Trụng bánh phở qua nước sôi.","Cho phở vào tô, bày thịt gà, chan nước dùng nóng. Ăn kèm giá, hành lá, chanh ớt."],
+ tip:"Nướng gừng và hành làm nước dùng thơm đặc biệt hơn."},
+
+{name:"Miến gà",              emoji:"🍝", catcls:"eb-man",  keys:["gà"],cat:"Mặn",time:"40 phút",cal:290,diff:"Dễ",
+ desc:"Miến gà nước dùng ngọt thanh, thích hợp bữa sáng hay khi ăn nhẹ.",
+ ings:["300g gà","100g miến","nấm tai mèo","hành lá","gừng","muối","nước mắm","tiêu"],
+ steps:["Luộc gà với gừng đến chín, vớt ra xé sợi, lọc lấy nước dùng.","Miến và nấm ngâm mềm, cắt ngắn.","Nước dùng đun sôi lại, thêm miến và nấm, nấu 5-7 phút.","Nêm nước mắm muối cho vừa ăn.","Múc ra tô, bày gà xé, rắc hành lá và tiêu."],
+ tip:"Đừng nấu miến quá lâu sẽ bị nhão."},
+
+{name:"Gà hầm khoai tây",    emoji:"🥔", catcls:"eb-man",  keys:["gà","khoai tây"],cat:"Mặn",time:"60 phút",cal:380,diff:"Dễ",
+ desc:"Gà hầm mềm ngọt cùng khoai tây bở thơm.",
+ ings:["500g gà","2 củ khoai tây","cà rốt","hành tây","tỏi","nước dùng","nước mắm","muối tiêu"],
+ steps:["Gà chặt miếng, xào vàng sơ với tỏi và hành.","Khoai và cà rốt cắt khối, hành tây cắt múi.","Cho tất cả vào nồi, đổ nước dùng xấp mặt.","Đun sôi, hạ lửa nhỏ hầm 40-45 phút.","Nêm nước mắm muối tiêu. Ăn với bánh mì hoặc cơm."],
+ tip:"Xào gà vàng trước khi hầm để nước dùng đậm đà hơn."},
+
+// ─── THỊT BÒ ───
+{name:"Bò xào hành tây",     emoji:"🧅", catcls:"eb-man",  keys:["thịt bò","bò","hành tây"],cat:"Mặn",time:"20 phút",cal:380,diff:"Dễ",
+ desc:"Bò tái xào hành tây giòn ngọt, nhanh gọn đậm đà.",
+ ings:["300g thịt bò","1 củ hành tây","3 tép tỏi","2 thìa nước tương","1 thìa dầu hào","tiêu","dầu ăn"],
+ steps:["Bò thái mỏng ngang thớ, ướp nước tương, dầu hào, tiêu 10 phút.","Hành tây thái múi, tỏi băm nhỏ.","Làm nóng chảo lửa lớn đến khói, cho dầu vào.","Xào bò nhanh 1-2 phút đến khi thay màu, xúc ra để riêng.","Xào tỏi thơm, cho hành vào xào giòn. Cho bò vào đảo đều 30 giây. Nêm lại và trút ra."],
+ tip:"Lửa phải thật lớn và xào nhanh tay để bò mềm không bị dai."},
+
+{name:"Bò lúc lắc",           emoji:"🥗", catcls:"eb-man",  keys:["thịt bò","bò"],cat:"Mặn",time:"25 phút",cal:420,diff:"Trung bình",
+ desc:"Bò lúc lắc kiểu Sài Gòn xào dầu hào, ăn kèm rau xà lách và cà chua.",
+ ings:["400g thịt bò thăn","dầu hào","nước tương","tiêu","tỏi","hành tây","rau xà lách","cà chua","muối tiêu chanh"],
+ steps:["Bò thái khối 2x2cm, ướp dầu hào, nước tương, tỏi băm, tiêu 20 phút.","Trải rau xà lách và cà chua ra đĩa.","Làm nóng chảo gang hoặc inox rất nóng với dầu.","Cho bò vào lắc mạnh liên tục 2-3 phút, bò vừa chín tái.","Đổ lên rau sống, rắc muối tiêu và vắt chanh."],
+ tip:"Chảo phải thật nóng — đó là bí quyết để bò lúc lắc thơm ngon."},
+
+{name:"Bò kho cà rốt",        emoji:"🥕", catcls:"eb-man",  keys:["thịt bò","bò"],cat:"Mặn",time:"90 phút",cal:400,diff:"Trung bình",
+ desc:"Bò kho đậm đà hương vị ngũ vị hương, cà rốt mềm ngọt.",
+ ings:["500g bắp bò","2 củ cà rốt","sả","gừng","tỏi","ngũ vị hương","nước mắm","đường","cà chua"],
+ steps:["Bò cắt khối, ướp nước mắm, đường, ngũ vị hương, tỏi sả băm 30 phút.","Phi tỏi thơm, xào bò săn lại.","Cho cà chua vào xào nát, thêm nước ngập thịt.","Đun sôi rồi hạ lửa nhỏ, kho 60-70 phút.","Cho cà rốt vào kho tiếp 20 phút. Nêm lại cho vừa ăn, ăn với bánh mì hoặc cơm."],
+ tip:"Kho bò với ngọn lửa nhỏ liu riu để thịt mềm mà không bị tơi."},
+
+{name:"Phở bò",               emoji:"🐮", catcls:"eb-man",  keys:["thịt bò","bò"],cat:"Mặn",time:"120 phút",cal:450,diff:"Khó",
+ desc:"Phở bò Hà Nội cổ điển, nước dùng trong ngọt đặc trưng.",
+ ings:["xương bò 1kg","200g thịt bò tái","bánh phở","hành tây","gừng","hoa hồi","thảo quả","quế","muối","nước mắm"],
+ steps:["Chần xương bò qua nước sôi, rửa sạch.","Nướng hành tây và gừng trên bếp đến thơm.","Hầm xương với hành, gừng, các gia vị thơm 3-4 tiếng, hớt bọt thường xuyên.","Lọc nước dùng, nêm nước mắm muối cho vừa.","Trụng phở, bày bò tái thái mỏng, chan nước dùng sôi. Ăn kèm rau thơm, chanh, ớt."],
+ tip:"Nước dùng ngon cần hầm ít nhất 3-4 tiếng với lửa nhỏ."},
+
+{name:"Bò nướng lá lốt",      emoji:"🌱", catcls:"eb-man",  keys:["thịt bò","bò"],cat:"Mặn",time:"30 phút",cal:360,diff:"Trung bình",
+ desc:"Bò cuộn lá lốt thơm đặc trưng, ăn không thể dừng.",
+ ings:["300g thịt bò bằm","lá lốt","sả băm","tỏi băm","nước mắm","tiêu","dầu ăn"],
+ steps:["Trộn bò bằm với sả, tỏi, nước mắm, tiêu cho đều.","Trải lá lốt phẳng, đặt ít thịt ở đầu lá, cuộn chặt lại.","Nướng trên bếp than hoặc chảo gang lửa vừa 3-4 phút mỗi mặt.","Hoặc chiên trong dầu nóng 3-4 phút đến chín đều.","Ăn nóng với bún, rau sống, nước chấm."],
+ tip:"Dùng tăm ghim đầu cuộn để lá lốt không bị bung khi nướng."},
+
+// ─── TÔM ───
+{name:"Tôm rang muối sả",     emoji:"🦐", catcls:"eb-man",  keys:["tôm"],cat:"Mặn",time:"20 phút",cal:220,diff:"Dễ",
+ desc:"Tôm rang muối sả giòn ngon, thơm lừng, ăn được cả vỏ.",
+ ings:["400g tôm","3 cây sả","3 tép tỏi","2 quả ớt","muối","tiêu","dầu ăn"],
+ steps:["Tôm rửa sạch, để ráo (có thể để nguyên vỏ).","Sả đập dập thái nhỏ, tỏi và ớt băm.","Làm nóng chảo lửa lớn, cho dầu vào.","Phi sả tỏi thơm, cho tôm vào rang lửa lớn.","Rắc muối tiêu, đảo liên tục 3-4 phút đến tôm chín đỏ giòn. Cho ớt vào, đảo thêm 1 phút."],
+ tip:"Để tôm thật ráo nước trước khi rang để rang giòn hơn."},
+
+{name:"Tôm hấp bia gừng",     emoji:"🍺", catcls:"eb-man",  keys:["tôm"],cat:"Mặn",time:"15 phút",cal:180,diff:"Dễ",
+ desc:"Tôm hấp bia tươi ngọt tự nhiên, giữ nguyên vị đặc trưng.",
+ ings:["500g tôm sú","1 lon bia","gừng thái lát","sả đập dập","muối","nước chấm hải sản"],
+ steps:["Rửa tôm sạch, cắt bỏ râu và phần đầu nhọn.","Cho bia, gừng, sả vào nồi hấp, đun sôi.","Xếp tôm vào xửng hấp, hấp 6-8 phút đến khi tôm đỏ chín.","Pha nước chấm: nước mắm chanh đường tỏi ớt.","Ăn ngay khi còn nóng."],
+ tip:"Đừng hấp quá lâu — tôm sẽ bị dai và mất vị ngọt."},
+
+{name:"Tôm sốt tỏi bơ",       emoji:"🧈", catcls:"eb-man",  keys:["tôm"],cat:"Mặn",time:"15 phút",cal:280,diff:"Dễ",
+ desc:"Tôm xào bơ tỏi thơm béo kiểu Western đơn giản mà sang.",
+ ings:["300g tôm","30g bơ","4 tép tỏi","1 thìa nước tương","muối","tiêu","mùi tây hoặc hành lá"],
+ steps:["Tôm bóc vỏ, bỏ chỉ, ướp muối tiêu.","Làm nóng chảo lửa vừa, cho bơ vào đến khi tan chảy.","Phi tỏi thái lát trong bơ đến vàng thơm.","Cho tôm vào xào 2-3 phút đến khi chín hồng đều.","Thêm nước tương, đảo đều. Rắc hành lá hoặc mùi tây. Ăn với bánh mì hoặc cơm."],
+ tip:"Dùng bơ lạt (unsalted) và tự điều chỉnh muối để kiểm soát độ mặn."},
+
+{name:"Bún riêu tôm",          emoji:"🍵", catcls:"eb-man",  keys:["tôm"],cat:"Mặn",time:"50 phút",cal:350,diff:"Trung bình",
+ desc:"Bún riêu chua ngọt đặc trưng miền Bắc.",
+ ings:["200g tôm tươi","100g cua đồng hoặc gạch cua","bún tươi","cà chua","đậu phụ chiên","mắm tôm","hành lá","rau sống"],
+ steps:["Xay hoặc giã nhuyễn tôm với gạch cua, thêm ít trứng.","Cà chua xào với nước mắm làm chua, đổ nước luộc tôm vào.","Đun sôi, đổ hỗn hợp tôm cua vào khuấy nhẹ — riêu sẽ đông lại.","Thêm đậu phụ chiên, nêm mắm tôm và nước mắm cho vừa.","Trụng bún, chan nước riêu nóng. Ăn kèm rau sống."],
+ tip:"Mắm tôm là linh hồn của bún riêu, không thể thiếu."},
+
+// ─── CÁ ───
+{name:"Cá kho tộ",             emoji:"🐟", catcls:"eb-man",  keys:["cá"],cat:"Mặn",time:"30 phút",cal:310,diff:"Dễ",
+ desc:"Cá kho nước màu chuẩn miền Nam, đậm đà ăn với cơm trắng.",
+ ings:["400g cá (cá thu, cá trê, cá lóc)","3 thìa nước mắm","2 thìa đường","gừng","tỏi","ớt","tiêu","nước màu"],
+ steps:["Cá rửa sạch, khứa 2-3 đường hai bên mình cá.","Lót gừng thái lát xuống đáy tộ đất hoặc nồi nhỏ.","Cho cá vào, thêm nước mắm, đường, nước màu, tỏi ớt.","Đun sôi rồi hạ lửa nhỏ, kho 20-25 phút đến cạn nước.","Thêm chút tiêu, nêm lại. Ăn nóng với cơm trắng."],
+ tip:"Kho trong tộ đất giữ nhiệt đều và cá không bị tanh."},
+
+{name:"Canh cá chua cay",      emoji:"🌊", catcls:"eb-man",  keys:["cá"],cat:"Mặn",time:"25 phút",cal:220,diff:"Dễ",
+ desc:"Canh cá me chua thanh cay nhẹ, giải nhiệt mùa hè.",
+ ings:["400g cá (cá tra, cá basa)","50g me chua","cà chua","dứa","đậu bắp","rau om","bạc hà","ớt","nước mắm"],
+ steps:["Me ngâm nước nóng, lọc lấy nước cốt.","Phi tỏi thơm, cho cà chua và dứa vào xào.","Thêm nước me và khoảng 800ml nước, đun sôi.","Cho cá vào, đun 8-10 phút đến chín, hớt bọt.","Thêm đậu bắp, nêm nước mắm. Tắt bếp, thêm rau om bạc hà và ớt."],
+ tip:"Cho cá vào nước đang sôi để cá không bị tanh."},
+
+{name:"Cá hấp gừng hành",      emoji:"🐠", catcls:"eb-man",  keys:["cá"],cat:"Mặn",time:"20 phút",cal:200,diff:"Dễ",
+ desc:"Cá hấp giữ nguyên vị tươi ngọt, thanh đạm tốt cho sức khỏe.",
+ ings:["400g cá (cá trắm, cá chép, cá basa)","gừng","hành lá","nước tương","dầu mè","tiêu"],
+ steps:["Cá rửa sạch, khứa vài đường hai bên, ướp muối 5 phút.","Lót gừng thái sợi và hành lá vào trong bụng và bên trên cá.","Hấp cách thủy 12-15 phút tùy độ dày cá.","Đổ nước tương và dầu mè lên trên cá.","Phi dầu nóng, rưới lên cá cho thơm. Ăn ngay."],
+ tip:"Kiểm tra cá chín bằng cách dùng đũa tách thịt ở phần dày nhất."},
+
+{name:"Cá chiên giòn",         emoji:"🐡", catcls:"eb-man",  keys:["cá"],cat:"Mặn",time:"20 phút",cal:350,diff:"Dễ",
+ desc:"Cá chiên vàng giòn bên ngoài, bên trong mềm thơm ngọt.",
+ ings:["400g cá","muối","tiêu","bột mì hoặc bột chiên giòn","dầu chiên","chanh"],
+ steps:["Cá rửa sạch, thấm khô, ướp muối tiêu 10 phút.","Áo một lớp bột mì mỏng hoặc bột chiên giòn lên mình cá.","Làm nóng dầu 170°C, đặt cá vào chiên.","Chiên 4-5 phút mỗi mặt đến khi vàng đều giòn.","Vớt ra để ráo, ăn với chanh và rau sống."],
+ tip:"Thấm thật khô cá trước khi chiên để không bắn dầu và cá giòn hơn."},
+
+// ─── MỰC ───
+{name:"Mực xào sả ớt",        emoji:"🦑", catcls:"eb-man",  keys:["mực"],cat:"Mặn",time:"20 phút",cal:250,diff:"Dễ",
+ desc:"Mực xào sả ớt cay thơm đặc trưng, dai giòn hấp dẫn.",
+ ings:["400g mực ống","3 cây sả","3 quả ớt","tỏi","nước mắm","đường","dầu ăn"],
+ steps:["Mực làm sạch, thái khoanh hoặc xẻ bông.","Chần mực qua nước sôi 30 giây, vớt ra ngay.","Phi sả tỏi ớt thơm với dầu nóng lửa lớn.","Cho mực vào xào nhanh 2-3 phút ở lửa lớn.","Nêm nước mắm đường, đảo đều. Trút ra đĩa ăn ngay."],
+ tip:"Chần mực sơ và xào nhanh lửa lớn giúp mực dai giòn không ra nước."},
+
+{name:"Mực nướng sa tế",       emoji:"🔥", catcls:"eb-man",  keys:["mực"],cat:"Mặn",time:"25 phút",cal:280,diff:"Dễ",
+ desc:"Mực nướng sa tế thơm cay, bóng đẹp hấp dẫn.",
+ ings:["400g mực ống lớn","2 thìa sa tế","1 thìa nước mắm","1 thìa đường","tỏi băm","dầu ăn"],
+ steps:["Mực làm sạch, để nguyên ống hoặc xẻ đôi.","Pha nước ướp sa tế: sa tế, nước mắm, đường, tỏi, dầu ăn.","Ướp mực 15-20 phút.","Nướng trên bếp than hoặc chảo grill lửa vừa lớn 3-4 phút mỗi mặt.","Phết thêm nước ướp khi nướng để bóng đẹp. Ăn nóng với bánh mì."],
+ tip:"Đừng nướng quá lâu — mực sẽ bị dai cứng."},
+
+// ─── ĐẬU PHỤ ───
+{name:"Đậu phụ chiên sốt cà chua", emoji:"🍅", catcls:"eb-chay", keys:["đậu phụ","cà chua"],cat:"Chay",time:"20 phút",cal:220,diff:"Dễ",
+ desc:"Đậu phụ chiên vàng sốt cà chua ngọt chua dịu nhẹ.",
+ ings:["400g đậu phụ","2 quả cà chua","hành tím","tỏi","nước mắm hoặc tương","đường","hành lá","dầu ăn"],
+ steps:["Đậu phụ cắt miếng vuông, chiên ngập dầu đến vàng đều, vớt ra để ráo.","Phi hành tỏi thơm, xào cà chua đến nát và ra nước.","Nêm nước mắm/tương, đường cho vừa ăn.","Cho đậu chiên vào đảo nhẹ trong sốt 2-3 phút cho ngấm.","Rắc hành lá, trút ra đĩa."],
+ tip:"Đậu phụ phải thật ráo nước và chiên đến vàng sẽ không bị nát khi xào."},
+
+{name:"Đậu phụ kho thịt băm", emoji:"🟨", catcls:"eb-man",  keys:["đậu phụ","thịt bằm","thịt heo","thịt lợn"],cat:"Mặn",time:"25 phút",cal:280,diff:"Dễ",
+ desc:"Đậu phụ kho thịt băm đậm đà dễ ăn.",
+ ings:["300g đậu phụ","150g thịt heo bằm","tỏi","hành tím","nước mắm","đường","nước màu","hành lá"],
+ steps:["Đậu phụ cắt miếng, chiên vàng sơ.","Phi hành tỏi, xào thịt băm đến chín tơi.","Thêm nước mắm, đường, nước màu.","Cho đậu phụ vào, thêm nước vừa ngập, kho lửa nhỏ 10-12 phút.","Nước sánh lại, rắc hành lá và tiêu."],
+ tip:"Kho lửa nhỏ để đậu thấm gia vị mà không bị vỡ."},
+
+{name:"Canh đậu phụ cà chua", emoji:"🫗", catcls:"eb-chay", keys:["đậu phụ","cà chua"],cat:"Chay",time:"15 phút",cal:140,diff:"Dễ",
+ desc:"Canh thanh mát chua dịu nhẹ nhàng, phù hợp ăn chay.",
+ ings:["200g đậu phụ","2 quả cà chua","hành lá","muối","đường","dầu ăn"],
+ steps:["Đậu phụ cắt khối vuông nhỏ. Cà chua bổ múi cau.","Phi hành tím thơm, xào cà chua 2 phút.","Thêm nước khoảng 600ml, đun sôi.","Cho đậu phụ vào, đun 5 phút.","Nêm muối đường cho vừa. Rắc hành lá và tiêu."],
+ tip:"Cho đậu phụ vào sau cùng để không bị vỡ nát."},
+
+// ─── KHOAI TÂY ───
+{name:"Khoai tây chiên giòn", emoji:"🍟", catcls:"eb-vat",  keys:["khoai tây"],cat:"Ăn vặt",time:"25 phút",cal:290,diff:"Dễ",
+ desc:"Khoai tây chiên giòn rụm tự làm tại nhà.",
+ ings:["400g khoai tây","dầu chiên","muối","tiêu","paprika"],
+ steps:["Khoai tây gọt vỏ, thái que đều, ngâm nước lạnh 20 phút.","Vớt ra thấm thật khô bằng khăn giấy.","Chiên lần 1: dầu 150°C, chiên 5-6 phút đến hơi chín, vớt ra.","Để nguội 10 phút. Chiên lần 2: dầu 185°C, chiên 2-3 phút đến vàng giòn.","Vớt ra rắc muối, tiêu, paprika ngay khi còn nóng."],
+ tip:"Chiên hai lần tạo lớp vỏ giòn rụm bên ngoài, mềm bên trong."},
+
+{name:"Khoai tây nghiền bơ",  emoji:"🥔", catcls:"eb-man",  keys:["khoai tây"],cat:"Mặn",time:"30 phút",cal:280,diff:"Dễ",
+ desc:"Khoai tây nghiền mịn béo bơ, ăn kèm steak hay thịt nướng.",
+ ings:["500g khoai tây","50g bơ","100ml sữa tươi","muối","tiêu trắng"],
+ steps:["Khoai tây gọt vỏ, cắt khúc, luộc đến khi mềm bở khoảng 20 phút.","Vớt ra để ráo hơi nước khoảng 2 phút.","Nghiền khoai khi còn nóng bằng máy hoặc nĩa.","Cho bơ vào trộn tan chảy, từ từ thêm sữa nóng vào.","Nêm muối tiêu, trộn đều đến mịn. Ăn ngay."],
+ tip:"Nghiền khoai khi còn nóng và thêm sữa nóng để mịn, không bị nhão."},
+
+// ─── CÀ CHUA ───
+{name:"Cà chua nhồi thịt",    emoji:"🍅", catcls:"eb-man",  keys:["cà chua","thịt bằm","thịt heo","thịt lợn"],cat:"Mặn",time:"35 phút",cal:290,diff:"Trung bình",
+ desc:"Cà chua nhồi thịt hấp hoặc chiên lạ miệng, thơm ngon.",
+ ings:["4 quả cà chua to","200g thịt heo bằm","nấm mèo","hành lá","nước mắm","tiêu","dầu ăn"],
+ steps:["Khoét phần đầu cà chua, múc ruột ra.","Băm nhuyễn ruột cà chua, trộn với thịt bằm, nấm, hành lá, nước mắm.","Nhồi hỗn hợp thịt vào trong cà chua, đậy nắp lại.","Hấp 18-20 phút hoặc chiên ngập dầu 5-6 phút.","Pha sốt cà me chan lên, ăn nóng."],
+ tip:"Không nhồi quá đầy — thịt sẽ phồng khi chín và làm vỡ cà chua."},
+
+// ─── RAU CẢI ───
+{name:"Rau cải xào tỏi",      emoji:"🥬", catcls:"eb-chay", keys:["rau cải"],cat:"Chay",time:"10 phút",cal:90,diff:"Dễ",
+ desc:"Rau cải xào tỏi đơn giản nhanh gọn, xanh giòn ngon.",
+ ings:["400g rau cải xanh hoặc cải ngọt","4 tép tỏi","muối","dầu ăn","nước"],
+ steps:["Rau cải rửa sạch, cắt khúc vừa ăn, để ráo.","Tỏi đập dập, băm nhỏ.","Làm nóng chảo lửa lớn với dầu, phi tỏi đến thơm.","Cho rau vào, đảo nhanh lửa lớn.","Thêm chút nước, nêm muối, đảo thêm 1-2 phút đến rau chín tới. Ăn ngay."],
+ tip:"Xào lửa lớn nhanh tay để rau giữ màu xanh đẹp và giòn."},
+
+{name:"Canh rau cải thịt bằm", emoji:"🍲", catcls:"eb-man", keys:["rau cải","thịt bằm","thịt heo","thịt lợn"],cat:"Mặn",time:"15 phút",cal:180,diff:"Dễ",
+ desc:"Canh đơn giản bổ dưỡng, nấu nhanh cho bữa cơm hàng ngày.",
+ ings:["300g rau cải","100g thịt heo bằm","tỏi","nước mắm","muối","tiêu","hành lá"],
+ steps:["Phi tỏi thơm, xào thịt bằm chín tơi với nước mắm.","Thêm nước khoảng 600ml, đun sôi.","Cho rau cải vào, đun thêm 3-4 phút.","Nêm muối, nước mắm cho vừa ăn.","Rắc hành lá tiêu, múc ra tô."],
+ tip:"Cho rau vào lúc nước đang sôi để rau nhanh chín mà giữ màu đẹp."},
+
+// ─── NẤM ───
+{name:"Nấm xào tỏi bơ",       emoji:"🍄", catcls:"eb-chay", keys:["nấm"],cat:"Chay",time:"15 phút",cal:180,diff:"Dễ",
+ desc:"Nấm xào bơ tỏi thơm béo, có thể ăn với steak hay cơm.",
+ ings:["300g nấm hương hoặc nấm kim châm","30g bơ","3 tép tỏi","muối","tiêu","mùi tây"],
+ steps:["Nấm rửa sạch, bỏ chân, thái lát hoặc xé miếng.","Làm nóng chảo lửa vừa, cho bơ vào tan chảy.","Phi tỏi thái lát đến vàng thơm.","Cho nấm vào xào lửa lớn 4-5 phút không đảo nhiều.","Nêm muối tiêu, rắc mùi tây. Ăn ngay."],
+ tip:"Đừng xào nhiều lần — nấm cần để yên cho ra nước rồi mới đảo."},
+
+{name:"Súp nấm kem",           emoji:"☁️", catcls:"eb-chay", keys:["nấm"],cat:"Chay",time:"30 phút",cal:220,diff:"Dễ",
+ desc:"Súp nấm sánh mịn kiểu Tây, thơm ngậy.",
+ ings:["300g nấm hương","1 củ hành tây","tỏi","bơ","500ml nước dùng","150ml kem tươi","muối","tiêu"],
+ steps:["Phi hành tây và tỏi với bơ đến mềm.","Cho nấm vào xào 5 phút đến ra nước và thơm.","Đổ nước dùng vào, đun sôi rồi nấu thêm 15 phút.","Xay nhuyễn bằng máy xay.","Thêm kem tươi, đun lại đến sôi nhẹ. Nêm muối tiêu và dọn ngay."],
+ tip:"Để lại một ít nấm xào riêng để trang trí trên súp cho đẹp."},
+
+// ─── NGÔ ───
+{name:"Ngô luộc",             emoji:"🌽", catcls:"eb-vat",  keys:["ngô"],cat:"Ăn vặt",time:"15 phút",cal:130,diff:"Dễ",
+ desc:"Ngô luộc chín vàng dẻo ngọt, đơn giản nhất thế giới.",
+ ings:["4 bắp ngô","muối","nước"],
+ steps:["Bóc bớt vỏ ngoài, giữ lại 1-2 lớp lá và râu ngô.","Cho vào nồi nước có muối, đun sôi.","Luộc 15-20 phút đến khi hạt ngô mềm chín.","Vớt ra để ráo, ăn nóng.","Có thể thêm muối hoặc bơ khi ăn."],
+ tip:"Để lại lá và râu khi luộc giúp ngô ngọt và thơm hơn."},
+
+{name:"Ngô nướng bơ muối",    emoji:"🔆", catcls:"eb-vat",  keys:["ngô"],cat:"Ăn vặt",time:"20 phút",cal:200,diff:"Dễ",
+ desc:"Ngô nướng thơm bơ mặn ngọt, đặc sản vỉa hè.",
+ ings:["3 bắp ngô","40g bơ","muối","tiêu","paprika"],
+ steps:["Ngô luộc sơ 10 phút, vớt ra để ráo.","Pha bơ mềm với muối, tiêu, paprika.","Nướng ngô trên bếp than hoặc bếp gas lửa vừa.","Xoay đều đến khi ngô có vết cháy vàng đẹp.","Phết bơ lên khi còn nóng. Ăn ngay."],
+ tip:"Luộc sơ trước khi nướng giúp ngô chín đều và không bị khô."},
+
+{name:"Chè ngô dừa",          emoji:"🥥", catcls:"eb-ngot", keys:["ngô"],cat:"Ngọt",time:"25 phút",cal:250,diff:"Dễ",
+ desc:"Chè ngô nước cốt dừa thơm béo ngọt, mát mùa hè.",
+ ings:["3 bắp ngô","200ml nước cốt dừa","100ml nước dừa","đường","bột năng","muối"],
+ steps:["Tách hạt ngô, cho vào nồi cùng nước dừa, đun sôi 10 phút.","Thêm đường, nêm cho vừa ngọt.","Hoà bột năng với nước lạnh, đổ từ từ vào chè vừa khuấy.","Đun đến khi chè sánh lại.","Rưới nước cốt dừa lên, ăn nóng hoặc để nguội đều ngon."],
+ tip:"Cho muối một chút vào nước cốt dừa để làm nổi vị ngọt béo."},
+
+// ─── BƠ (AVOCADO) ───
+{name:"Sinh tố bơ sữa",       emoji:"🥑", catcls:"eb-uong", keys:["bơ"],cat:"Đồ uống",time:"5 phút",cal:320,diff:"Dễ",
+ desc:"Sinh tố bơ sữa đặc mịn ngọt béo, bổ dưỡng.",
+ ings:["1 quả bơ chín","200ml sữa tươi","2 thìa đường","đá viên"],
+ steps:["Bơ bổ đôi, bỏ hạt, nạo lấy thịt.","Cho bơ, sữa, đường vào máy xay.","Thêm đá viên.","Xay mịn đều.","Rót ra ly, uống ngay."],
+ tip:"Bơ chín mềm (vỏ sẫm, ấn nhẹ có) mới ngon và ngọt."},
+
+{name:"Bánh mì bơ trứng",     emoji:"🥑", catcls:"eb-sang", keys:["bơ","trứng"],cat:"Sáng",time:"10 phút",cal:380,diff:"Dễ",
+ desc:"Ăn sáng nhanh ngon: bánh mì nướng bơ trứng ốp la.",
+ ings:["2 lát bánh mì","1 quả bơ","1 quả trứng","muối","tiêu","chanh","dầu ăn"],
+ steps:["Nướng bánh mì đến giòn và vàng.","Nghiền thịt bơ với muối, tiêu, vài giọt chanh.","Phết bơ nghiền lên bánh mì.","Chiên trứng ốp la vừa chín.","Đặt trứng lên bánh mì, rắc muối tiêu, ăn ngay."],
+ tip:"Bơ nghiền với chanh giúp không bị thâm đen nhanh."},
+
+{name:"Sinh tố bơ xoài",      emoji:"🥭", catcls:"eb-uong", keys:["bơ","xoài"],cat:"Đồ uống",time:"5 phút",cal:290,diff:"Dễ",
+ desc:"Sinh tố kết hợp hai loại trái cây nhiệt đới béo ngọt.",
+ ings:["1 quả bơ","1/2 quả xoài chín","150ml sữa dừa","mật ong","đá"],
+ steps:["Bơ nạo lấy thịt, xoài gọt vỏ cắt miếng.","Cho vào máy xay cùng sữa dừa.","Thêm mật ong và đá.","Xay mịn đến khi sánh.","Rót ra ly và uống ngay."],
+ tip:"Dùng sữa dừa thay sữa bò giúp sinh tố ngậy béo hơn."},
+
+// ─── CHUỐI ───
+{name:"Sinh tố chuối sữa",    emoji:"🍌", catcls:"eb-uong", keys:["chuối"],cat:"Đồ uống",time:"5 phút",cal:280,diff:"Dễ",
+ desc:"Sinh tố chuối đơn giản ngọt béo bổ năng lượng.",
+ ings:["2 quả chuối chín","200ml sữa tươi","1 thìa mật ong","đá"],
+ steps:["Chuối bóc vỏ, cắt khúc.","Cho vào máy xay cùng sữa, mật ong.","Thêm đá.","Xay mịn.","Rót ra ly và uống ngay."],
+ tip:"Chuối đông lạnh sẽ tạo ra sinh tố sánh mịn hơn không cần đá."},
+
+{name:"Chuối chiên giòn",      emoji:"✨", catcls:"eb-ngot", keys:["chuối"],cat:"Ngọt",time:"15 phút",cal:280,diff:"Dễ",
+ desc:"Chuối chiên giòn thơm ngọt, phủ vừng rang thơm.",
+ ings:["3 quả chuối chín","bột chiên giòn","vừng rang","dầu chiên","đường"],
+ steps:["Chuối bóc vỏ, bổ đôi theo chiều dài.","Nhúng qua bột chiên giòn pha loãng.","Chiên ngập dầu 170°C đến vàng giòn khoảng 3-4 phút.","Vớt ra để ráo, rắc vừng và đường bột.","Ăn nóng khi còn giòn."],
+ tip:"Dùng chuối chín vừa không quá nhũn để chiên không bị nát."},
+
+{name:"Chè chuối nước cốt dừa", emoji:"🍵", catcls:"eb-ngot", keys:["chuối"],cat:"Ngọt",time:"20 phút",cal:260,diff:"Dễ",
+ desc:"Chè chuối nước cốt dừa thơm béo ngọt đặc trưng miền Nam.",
+ ings:["4 quả chuối","200ml nước cốt dừa","đường","bột năng","muối","vừng rang"],
+ steps:["Chuối bóc vỏ, cắt lát chéo.","Đun nước cốt dừa với 200ml nước và đường đến sôi.","Cho chuối vào, nấu 3-5 phút.","Hoà bột năng với nước lạnh, đổ vào khuấy đều đến sánh.","Múc ra chén, rắc vừng. Ăn nóng hay nguội đều ngon."],
+ tip:"Thêm ít muối vào nước cốt dừa để làm nổi vị béo."},
+
+// ─── DÂU TÂY ───
+{name:"Sinh tố dâu tây",       emoji:"🍓", catcls:"eb-uong", keys:["dâu tây"],cat:"Đồ uống",time:"5 phút",cal:150,diff:"Dễ",
+ desc:"Sinh tố dâu tươi đỏ đẹp, ngọt chua mát lạnh.",
+ ings:["200g dâu tây","150ml sữa tươi","2 thìa đường","đá viên"],
+ steps:["Dâu rửa sạch, bỏ cuống, cắt đôi.","Cho dâu, sữa, đường vào máy xay.","Thêm đá viên.","Xay mịn.","Rót ra ly, trang trí vài quả dâu và uống ngay."],
+ tip:"Đông lạnh dâu trước 1-2 tiếng để sinh tố ngon và đặc hơn."},
+
+{name:"Dâu tây dầm đường",     emoji:"🍬", catcls:"eb-ngot", keys:["dâu tây"],cat:"Ngọt",time:"10 phút",cal:120,diff:"Dễ",
+ desc:"Dâu dầm đường đơn giản, ăn với sữa chua hay kem rất ngon.",
+ ings:["200g dâu tây","3 thìa đường","1 thìa nước cốt chanh"],
+ steps:["Dâu rửa sạch, bỏ cuống, cắt tư hoặc để nguyên.","Rắc đường lên dâu, trộn nhẹ.","Thêm nước cốt chanh.","Ủ 15-20 phút để dâu ra nước.","Ăn kèm sữa chua, kem hoặc bánh ngọt."],
+ tip:"Dầm trong tủ lạnh sẽ ngon và mát hơn."},
+
+{name:"Mứt dâu tây",           emoji:"🫙", catcls:"eb-ngot", keys:["dâu tây"],cat:"Ngọt",time:"40 phút",cal:200,diff:"Trung bình",
+ desc:"Mứt dâu tự làm thơm ngon, phết bánh mì ăn sáng tuyệt.",
+ ings:["500g dâu tây","300g đường","2 thìa nước cốt chanh"],
+ steps:["Dâu rửa sạch bỏ cuống, trộn với đường, để 1-2 tiếng cho ra nước.","Cho hỗn hợp vào nồi, đun lửa vừa khuấy đều.","Thêm nước cốt chanh giúp đông và giữ màu đẹp.","Khuấy liên tục 25-30 phút đến khi mứt đặc sánh.","Đổ vào lọ thủy tinh đã khử trùng, đậy kín."],
+ tip:"Kiểm tra mứt đủ đặc: nhỏ một giọt lên đĩa lạnh, nếu không chảy là được."},
+
+// ─── SỮA CHUA ───
+{name:"Sữa chua dầm dâu tây",  emoji:"🥛", catcls:"eb-ngot", keys:["sữa chua","dâu tây"],cat:"Ngọt",time:"5 phút",cal:160,diff:"Dễ",
+ desc:"Sữa chua dầm trái cây mát lạnh bổ dưỡng tuyệt vời.",
+ ings:["200g sữa chua","100g dâu tây","1 thìa mật ong","granola"],
+ steps:["Dâu tây rửa sạch, cắt lát.","Cho sữa chua vào ly hoặc bát.","Bày dâu tây lên trên.","Rưới mật ong.","Rắc granola và ăn ngay."],
+ tip:"Dùng sữa chua không đường để kiểm soát độ ngọt theo ý."},
+
+{name:"Sữa chua nếp cẩm",      emoji:"🍶", catcls:"eb-ngot", keys:["sữa chua"],cat:"Ngọt",time:"15 phút",cal:280,diff:"Dễ",
+ desc:"Sữa chua nếp cẩm tím đẹp, bổ dưỡng và lạ miệng.",
+ ings:["200g sữa chua","100g nếp cẩm đã nấu chín","đường","nước cốt dừa"],
+ steps:["Nếp cẩm nấu chín với ít đường và nước cốt dừa, để nguội.","Cho sữa chua vào ly.","Múc nếp cẩm lên trên.","Rưới thêm nước cốt dừa.","Ăn ngay hoặc ướp lạnh 15 phút trước khi dùng."],
+ tip:"Nếp cẩm ngọt vừa ăn với sữa chua chua sẽ cân bằng hương vị."},
+
+{name:"Parfait sữa chua granola", emoji:"🌾", catcls:"eb-sang", keys:["sữa chua"],cat:"Sáng",time:"5 phút",cal:320,diff:"Dễ",
+ desc:"Bữa sáng healthy đẹp mắt đầy năng lượng.",
+ ings:["200g sữa chua Hy Lạp","50g granola","trái cây tươi (dâu, chuối, việt quất)","mật ong"],
+ steps:["Cho một lớp sữa chua xuống đáy ly.","Thêm lớp granola.","Bày trái cây lên trên.","Lặp lại các lớp.","Rưới mật ong, ăn ngay."],
+ tip:"Tách sữa chua và granola riêng đến khi ăn để granola không bị nhão."},
+
+// ─── HÀNH TÂY ───
+{name:"Hành tây caramel",      emoji:"🧅", catcls:"eb-chay", keys:["hành tây"],cat:"Chay",time:"30 phút",cal:120,diff:"Dễ",
+ desc:"Hành tây caramel ngọt ngào làm topping cho steak, burger hay bánh mì.",
+ ings:["3 củ hành tây","30g bơ","1 thìa đường","muối","tiêu"],
+ steps:["Hành tây bóc vỏ, thái lát mỏng theo vòng tròn.","Cho bơ vào chảo lửa nhỏ, cho hành vào.","Nêm muối và đường, đảo nhẹ.","Nấu lửa nhỏ 20-25 phút, thỉnh thoảng đảo đến khi hành mềm và có màu nâu vàng.","Nêm tiêu, dùng làm topping cho các món."],
+ tip:"Lửa nhỏ và kiên nhẫn — caramel hóa tự nhiên không thể làm nhanh."},
+
+{name:"Soup hành tây Pháp",    emoji:"🫱", catcls:"eb-man",  keys:["hành tây"],cat:"Mặn",time:"60 phút",cal:280,diff:"Trung bình",
+ desc:"Súp hành tây kiểu Pháp phủ phô mai nướng giòn tan.",
+ ings:["4 củ hành tây","bơ","1 lít nước dùng bò","rượu vang đỏ (tùy chọn)","bánh mì baguette","phô mai gruyère","muối","tiêu"],
+ steps:["Hành tây thái lát mỏng, caramel hóa với bơ 30 phút lửa nhỏ đến nâu vàng.","Thêm rượu vang nếu dùng, đun 2 phút.","Đổ nước dùng bò vào, đun 20 phút. Nêm muối tiêu.","Rót vào bát, đặt lát bánh mì lên trên, phủ phô mai.","Nướng trong lò đến phô mai chảy và vàng. Ăn nóng."],
+ tip:"Caramel hóa hành tây càng sâu màu, súp càng đậm đà ngon hơn."},
+
+// ─── SỮA ───
+{name:"Sữa nghệ mật ong",      emoji:"☕", catcls:"eb-uong", keys:["sữa"],cat:"Đồ uống",time:"10 phút",cal:180,diff:"Dễ",
+ desc:"Golden milk ấm áp chống viêm, tốt cho sức khỏe.",
+ ings:["300ml sữa tươi","1 thìa bột nghệ","1 thìa mật ong","1/4 thìa tiêu đen","gừng"],
+ steps:["Đun sữa ấm khoảng 60-70°C không đun sôi.","Cho bột nghệ, gừng gọt vỏ thái lát vào sữa.","Khuấy đều, đun thêm 2-3 phút lửa nhỏ.","Lọc qua rây, thêm mật ong và tiêu đen.","Rót ra ly, uống ấm."],
+ tip:"Tiêu đen giúp cơ thể hấp thụ curcumin trong nghệ tốt hơn."},
+
+{name:"Hot chocolate",         emoji:"🍫", catcls:"eb-uong", keys:["sữa"],cat:"Đồ uống",time:"10 phút",cal:250,diff:"Dễ",
+ desc:"Sô cô la nóng ấm áp ngọt ngào, an ủi những ngày lạnh.",
+ ings:["300ml sữa tươi","2 thìa bột cacao","2 thìa đường","1/4 thìa vani","kem tươi đánh bông"],
+ steps:["Hoà bột cacao với 3 thìa nước nóng thành hồ.","Đun sữa ấm, không sôi.","Cho hỗn hợp cacao vào sữa, khuấy đều.","Thêm đường và vani, khuấy tan.","Rót ra ly, múc kem tươi lên trên và uống ngay."],
+ tip:"Pha cacao trước với nước nóng giúp không bị vón cục khi cho vào sữa."},
+
+// ─── CHANH ───
+{name:"Nước chanh bạc hà",     emoji:"🍋", catcls:"eb-uong", keys:["chanh"],cat:"Đồ uống",time:"5 phút",cal:60,diff:"Dễ",
+ desc:"Nước chanh bạc hà mát lạnh giải nhiệt cực tốt.",
+ ings:["3 quả chanh","lá bạc hà","đường","nước","đá viên"],
+ steps:["Vắt nước cốt chanh.","Pha đường với nước nóng làm syrup, để nguội.","Giã nhẹ lá bạc hà cho ra tinh dầu.","Cho đá vào ly, thêm nước chanh, syrup và bạc hà.","Khuấy đều, trang trí và uống ngay."],
+ tip:"Giã bạc hà nhẹ tay — chỉ cần vài cái đập để tinh dầu tiết ra."},
+
+// ─── PHÔ MAI ───
+{name:"Bánh mì phô mai nướng", emoji:"🧀", catcls:"eb-sang", keys:["phô mai"],cat:"Sáng",time:"10 phút",cal:320,diff:"Dễ",
+ desc:"Bánh mì nướng phô mai chảy bên trong, giòn bên ngoài.",
+ ings:["2 lát bánh mì sandwich","2 lát phô mai","bơ","muối"],
+ steps:["Phết bơ lên cả hai mặt bánh mì.","Đặt phô mai vào giữa hai lát bánh.","Cho vào chảo chống dính lửa nhỏ.","Nướng 2-3 phút đến khi vàng giòn mặt dưới, lật lại.","Nướng thêm 2 phút đến khi phô mai chảy và cả hai mặt vàng."],
+ tip:"Lửa nhỏ để phô mai kịp chảy mà bánh không bị cháy."},
+];
+
+// ══════════════════════════════════════════════
+// EXTENDED DB — 100+ nguyên liệu mới (không hiện ở gợi ý nhanh)
+// ══════════════════════════════════════════════
+const DB_EXT = [
+
+// ─── THỊT VỊT ───
+{name:"Vịt quay mật ong",emoji:"🦆",catcls:"eb-man",keys:["vịt","thịt vịt"],cat:"Mặn",time:"90 phút",cal:520,diff:"Khó",
+ desc:"Vịt quay bóng đẹp, da giòn tan, thịt mềm ngọt đặc trưng.",
+ ings:["1/2 con vịt","3 thìa mật ong","2 thìa nước tương","1 thìa ngũ vị hương","tỏi gừng","dấm"],
+ steps:["Làm sạch vịt, trần qua nước sôi có gừng và giấm.","Pha nước quét: mật ong, nước tương, ngũ vị hương, tỏi gừng.","Quét đều lên vịt, treo khô trong tủ lạnh qua đêm.","Nướng lò 210°C, quét mật ong mỗi 20 phút trong 60-70 phút.","Để nghỉ 10 phút, chặt miếng và dọn ngay."],
+ tip:"Phơi khô da trước khi nướng là bí quyết da vịt giòn rụm."},
+
+{name:"Vịt kho gừng",emoji:"🫚",catcls:"eb-man",keys:["vịt","thịt vịt"],cat:"Mặn",time:"60 phút",cal:440,diff:"Trung bình",
+ desc:"Vịt kho gừng đậm đà, ấm nồng, át mùi tanh hoàn hảo.",
+ ings:["500g thịt vịt","gừng tươi","sả","nước mắm","đường","nước màu","tỏi ớt"],
+ steps:["Vịt chặt miếng, ướp nước mắm, đường, gừng, sả băm 30 phút.","Phi tỏi thơm, xào vịt săn lại.","Thêm nước màu, đảo đều lên màu.","Thêm nước vừa ngập, kho lửa nhỏ 40 phút.","Cho ớt vào, kho đến cạn sánh, nêm lại."],
+ tip:"Gừng là chìa khóa khử mùi tanh của vịt — đừng tiếc."},
+
+{name:"Cháo vịt hành ngò",emoji:"🍵",catcls:"eb-man",keys:["vịt","thịt vịt"],cat:"Mặn",time:"60 phút",cal:310,diff:"Dễ",
+ desc:"Cháo vịt bổ dưỡng, thơm gừng và ngò rí đặc trưng.",
+ ings:["300g vịt","100g gạo","gừng","ngò rí","hành lá","nước mắm","tiêu"],
+ steps:["Luộc vịt với gừng đến chín, vớt ra xé thịt, lọc nước dùng.","Nấu gạo trong nước dùng vịt đến bung nở.","Thêm thịt vịt vào, đun thêm 10 phút.","Nêm nước mắm, muối cho vừa.","Múc ra tô, rắc hành ngò và tiêu. Ăn nóng."],
+ tip:"Nước dùng vịt có vị đặc trưng — không cần thêm bột nêm."},
+
+// ─── THỊT DÊ ───
+{name:"Dê hầm sả gừng",emoji:"🐐",catcls:"eb-man",keys:["thịt dê","dê"],cat:"Mặn",time:"120 phút",cal:480,diff:"Khó",
+ desc:"Dê hầm mềm tan, thơm sả gừng át mùi đặc trưng.",
+ ings:["500g thịt dê","3 cây sả","gừng nhiều","tỏi","ớt","nước mắm","đường","rau húng"],
+ steps:["Thịt dê rửa sạch với muối và gừng, chặt miếng vừa.","Ướp nước mắm, đường, sả gừng tỏi băm 1 tiếng.","Xào dê săn với sả gừng lửa lớn.","Thêm nước ngập, hầm lửa nhỏ 80-90 phút.","Nêm lại, ăn kèm rau húng và bánh mì hoặc cơm."],
+ tip:"Gừng nhiều và sả là cách duy nhất khử được mùi dê hiệu quả."},
+
+// ─── THỊT TRÂU ───
+{name:"Bún bò Huế",emoji:"🌶️",catcls:"eb-man",keys:["thịt trâu","bắp bò","bò"],cat:"Mặn",time:"180 phút",cal:520,diff:"Khó",
+ desc:"Bún bò Huế cay nồng đặc trưng miền Trung, nước dùng đỏ đẹp thơm mắm ruốc.",
+ ings:["500g bắp bò","200g chả cua","bún tươi","sả","ớt bột","mắm ruốc Huế","hành","ruốc tôm","rau sống"],
+ steps:["Hầm xương bò với sả đập dập lấy nước dùng 2-3 tiếng.","Phi sa tế sả ớt thơm, cho mắm ruốc vào xào.","Trộn hỗn hợp sa tế vào nước dùng, đun sôi.","Bày bún, bắp bò thái lát, chả cua vào tô.","Chan nước dùng sôi bỏng. Ăn kèm rau sống, chanh ớt."],
+ tip:"Mắm ruốc Huế là linh hồn — không thay thế được."},
+
+// ─── HẢI SẢN ───
+{name:"Ngao xào sả ớt",emoji:"🦪",catcls:"eb-man",keys:["ngao","nghêu"],cat:"Mặn",time:"15 phút",cal:200,diff:"Dễ",
+ desc:"Ngao xào sả ớt cay thơm, nước ngọt hải sản đậm đà.",
+ ings:["500g ngao","3 cây sả","3 ớt","tỏi","nước mắm","đường","rau mùi"],
+ steps:["Ngao ngâm nước muối 1-2 tiếng cho nhả cát, rửa sạch.","Phi sả tỏi ớt thơm với dầu nóng lửa lớn.","Cho ngao vào đảo đều, đậy nắp 2-3 phút.","Khi ngao mở miệng, nêm nước mắm đường.","Rắc rau mùi. Ăn ngay khi còn nóng."],
+ tip:"Ngao mở miệng là chín — đun thêm sẽ dai cứng."},
+
+{name:"Hàu nướng mỡ hành",emoji:"🦪",catcls:"eb-man",keys:["hàu","sò hàu"],cat:"Mặn",time:"20 phút",cal:180,diff:"Dễ",
+ desc:"Hàu nướng thơm mỡ hành kiểu đặc sản biển.",
+ ings:["10 con hàu","hành lá","mỡ heo hoặc dầu ăn","nước mắm","tỏi","ớt","đậu phộng rang"],
+ steps:["Hàu cọ sạch vỏ, mở lấy thịt hoặc nướng cả vỏ.","Làm mỡ hành: phi hành lá trong dầu nóng.","Nướng hàu trên than hồng 3-4 phút đến sôi.","Chan mỡ hành và tỏi phi lên trên.","Rắc đậu phộng rang, vắt chanh. Ăn nóng."],
+ tip:"Hàu tươi chỉ cần nướng sơ giữ nguyên vị biển tươi ngon."},
+
+{name:"Ghẹ hấp sả gừng",emoji:"🦀",catcls:"eb-man",keys:["ghẹ","cua biển"],cat:"Mặn",time:"25 phút",cal:250,diff:"Trung bình",
+ desc:"Ghẹ hấp sả gừng giữ vị ngọt tự nhiên đặc trưng.",
+ ings:["2 con ghẹ","sả","gừng","muối","nước chấm hải sản"],
+ steps:["Ghẹ rửa sạch, bỏ phần không ăn.","Trải sả gừng vào đáy nồi hấp.","Đặt ghẹ lên, hấp 15-18 phút.","Kiểm tra: mai ghẹ đỏ đều là chín.","Pha nước chấm muối tiêu chanh hoặc tương gừng."],
+ tip:"Hấp sả gừng tạo hơi thơm tự nhiên cho ghẹ mà không át vị biển."},
+
+{name:"Bạch tuộc xào sa tế",emoji:"🐙",catcls:"eb-man",keys:["bạch tuộc"],cat:"Mặn",time:"20 phút",cal:230,diff:"Dễ",
+ desc:"Bạch tuộc xào sa tế dai giòn, cay nồng đặc biệt.",
+ ings:["400g bạch tuộc","2 thìa sa tế","tỏi","hành tây","sả","nước mắm","đường"],
+ steps:["Bạch tuộc làm sạch, chần 1 phút trong nước sôi, vớt ra.","Cắt khúc vừa ăn.","Phi tỏi sả thơm, cho bạch tuộc vào xào lửa lớn.","Thêm sa tế, hành tây, đảo đều 3-4 phút.","Nêm nước mắm đường, ăn ngay."],
+ tip:"Chần bạch tuộc giúp dai giòn đúng độ, đừng để lâu sẽ cứng."},
+
+{name:"Sò huyết xào me",emoji:"🦪",catcls:"eb-man",keys:["sò huyết","sò"],cat:"Mặn",time:"15 phút",cal:190,diff:"Dễ",
+ desc:"Sò huyết xào me chua cay ngọt dịu, ăn hoài không ngán.",
+ ings:["400g sò huyết","me chua","tỏi","ớt","đường","nước mắm","hành lá"],
+ steps:["Sò ngâm nước muối 1 tiếng nhả cát, rửa sạch.","Pha nước sốt me: me lọc, đường, nước mắm.","Phi tỏi ớt thơm lửa lớn.","Cho sò vào, đổ sốt me vào, đảo nhanh 2-3 phút.","Rắc hành lá. Ăn ngay lúc sò còn mở."],
+ tip:"Me không nên quá chua — cân bằng với đường cho vị hài hòa."},
+
+{name:"Cua rang muối",emoji:"🦀",catcls:"eb-man",keys:["cua","cua biển","ghẹ"],cat:"Mặn",time:"30 phút",cal:290,diff:"Trung bình",
+ desc:"Cua rang muối sa tế thơm nồng kiểu Singapore.",
+ ings:["1 con cua to","muối","tiêu","sa tế","bơ","tỏi","ớt","hành tây"],
+ steps:["Cua làm sạch, chặt miếng, để ráo.","Chiên sơ cua trong dầu nóng 3-4 phút, vớt ra.","Phi bơ tỏi ớt thơm.","Cho cua vào, thêm sa tế, muối tiêu.","Đảo đều trên lửa lớn 5 phút. Ăn với bánh mì."],
+ tip:"Chiên sơ cua trước giúp thịt chắc và không ra nước khi rang."},
+
+{name:"Tôm hùm nướng bơ tỏi",emoji:"🦞",catcls:"eb-man",keys:["tôm hùm"],cat:"Mặn",time:"25 phút",cal:380,diff:"Trung bình",
+ desc:"Tôm hùm nướng sang trọng đơn giản nhất tôn vị ngọt tự nhiên.",
+ ings:["1 con tôm hùm","50g bơ","4 tép tỏi","muối","tiêu","chanh","mùi tây"],
+ steps:["Tôm hùm bổ đôi theo chiều dọc.","Pha bơ tỏi băm, muối tiêu.","Phết bơ tỏi lên mặt thịt tôm.","Nướng lò 200°C mặt thịt hướng lên 15-18 phút.","Vắt chanh, rắc mùi tây. Ăn ngay."],
+ tip:"Tôm hùm tươi không cần làm gì nhiều — bơ tỏi là đủ."},
+
+// ─── RAU CỦ THÊM ───
+{name:"Bông cải xào tỏi",emoji:"🥦",catcls:"eb-chay",keys:["bông cải","súp lơ","broccoli"],cat:"Chay",time:"12 phút",cal:100,diff:"Dễ",
+ desc:"Bông cải xanh giòn tươi xào tỏi thanh nhẹ.",
+ ings:["300g bông cải xanh","3 tép tỏi","muối","dầu ăn","nước"],
+ steps:["Bông cải tách bông nhỏ, rửa sạch.","Chần qua nước sôi 1 phút, vớt ra ngay vào nước lạnh.","Phi tỏi vàng thơm.","Cho bông cải vào xào lửa lớn 2-3 phút.","Nêm muối, thêm chút nước, đảo đều và trút ra."],
+ tip:"Chần nước lạnh ngay sau khi chần nóng giúp giữ màu xanh đẹp."},
+
+{name:"Canh bí đỏ nước cốt dừa",emoji:"🎃",catcls:"eb-chay",keys:["bí đỏ","bí ngô"],cat:"Chay",time:"30 phút",cal:220,diff:"Dễ",
+ desc:"Canh bí đỏ béo ngậy nước cốt dừa, ngọt tự nhiên.",
+ ings:["400g bí đỏ","200ml nước cốt dừa","hành tây","tỏi","muối","đường","gừng"],
+ steps:["Bí đỏ gọt vỏ bỏ hạt, cắt khối.","Phi hành tây tỏi gừng mềm thơm.","Cho bí vào xào sơ 3 phút.","Thêm nước cốt dừa và 200ml nước, đun 15-20 phút đến bí mềm.","Nêm muối đường. Có thể xay nhuyễn hoặc để nguyên miếng."],
+ tip:"Bí đỏ Nhật (kabocha) ngọt hơn và ít nước hơn các loại khác."},
+
+{name:"Cà tím nướng miso",emoji:"🍆",catcls:"eb-chay",keys:["cà tím"],cat:"Chay",time:"25 phút",cal:150,diff:"Dễ",
+ desc:"Cà tím nướng mềm mịn phủ sốt miso mặn ngọt kiểu Nhật.",
+ ings:["2 quả cà tím","2 thìa miso","1 thìa mirin","1 thìa đường","dầu mè","vừng rang"],
+ steps:["Cà tím bổ đôi, khứa ca-rô lên mặt thịt.","Phết dầu ăn, nướng lò 200°C 15 phút đến mềm.","Pha sốt miso: miso, mirin, đường, trộn đều.","Phết sốt miso lên mặt cà, nướng thêm 5 phút.","Rắc vừng và dầu mè. Ăn nóng."],
+ tip:"Khứa ca-rô sâu giúp sốt miso thấm vào thịt cà."},
+
+{name:"Đậu que xào thịt bằm",emoji:"🫘",catcls:"eb-man",keys:["đậu que","đậu đũa"],cat:"Mặn",time:"15 phút",cal:200,diff:"Dễ",
+ desc:"Đậu que giòn xào thịt bằm đơn giản đưa cơm.",
+ ings:["300g đậu que","150g thịt heo bằm","tỏi","nước mắm","tiêu","dầu ăn"],
+ steps:["Đậu que rửa sạch, cắt khúc 4-5cm.","Chần qua nước sôi 1 phút, vớt ra.","Phi tỏi thơm, xào thịt bằm chín.","Cho đậu que vào xào lửa lớn 3-4 phút.","Nêm nước mắm tiêu, trút ra đĩa."],
+ tip:"Không xào quá lâu để đậu giữ độ giòn tươi."},
+
+{name:"Rau muống xào tỏi",emoji:"🌿",catcls:"eb-chay",keys:["rau muống"],cat:"Chay",time:"8 phút",cal:80,diff:"Dễ",
+ desc:"Rau muống xào tỏi giòn tươi, nhanh nhất bữa cơm.",
+ ings:["400g rau muống","4 tép tỏi","muối","dầu ăn"],
+ steps:["Rau muống nhặt sạch, bẻ khúc vừa ăn, rửa sạch để ráo.","Tỏi đập dập.","Làm nóng chảo lửa lớn với dầu, phi tỏi thơm vàng.","Cho rau vào xào lửa lớn, đảo nhanh liên tục.","Nêm muối, xào thêm 1-2 phút đến rau vừa chín. Trút ra ngay."],
+ tip:"Lửa phải to nhất và xào cực nhanh để rau xanh giòn không ra nước."},
+
+{name:"Cải thìa hấp dầu hào",emoji:"🥬",catcls:"eb-chay",keys:["cải thìa","cải ngọt"],cat:"Chay",time:"10 phút",cal:90,diff:"Dễ",
+ desc:"Cải thìa hấp mềm tươi, chan dầu hào thơm đơn giản.",
+ ings:["400g cải thìa","2 thìa dầu hào","1 thìa dầu mè","tỏi phi","nước dùng rau"],
+ steps:["Cải thìa rửa sạch, bổ đôi dọc nếu to.","Hấp cách thủy 4-5 phút đến vừa mềm tươi.","Pha sốt dầu hào: dầu hào, nước dùng, chút đường, đun ấm.","Chan sốt lên cải.","Rắc tỏi phi vàng và dầu mè."],
+ tip:"Đừng hấp quá lâu — cải nên vẫn giữ được màu xanh đẹp."},
+
+{name:"Măng xào thịt bò",emoji:"🎋",catcls:"eb-man",keys:["măng","măng tươi","măng khô"],cat:"Mặn",time:"30 phút",cal:260,diff:"Trung bình",
+ desc:"Măng giòn xào thịt bò đậm đà, hương vị đặc trưng.",
+ ings:["200g măng luộc","200g thịt bò","tỏi","hành lá","nước mắm","nước tương","tiêu"],
+ steps:["Măng luộc kỹ qua 2-3 lần nước sôi để hết độc và đắng.","Xé hoặc thái sợi vừa ăn.","Bò thái lát mỏng, ướp nước tương tiêu.","Xào bò nhanh lửa lớn, xúc ra.","Phi tỏi, xào măng 5 phút, cho bò vào đảo đều. Nêm lại."],
+ tip:"Luộc măng nhiều lần là bắt buộc để an toàn và ngon."},
+
+{name:"Canh rau ngót thịt bằm",emoji:"🌱",catcls:"eb-man",keys:["rau ngót"],cat:"Mặn",time:"15 phút",cal:150,diff:"Dễ",
+ desc:"Canh rau ngót thanh mát bổ dưỡng đặc trưng bữa cơm Việt.",
+ ings:["200g rau ngót","100g thịt heo bằm","tỏi","muối","nước mắm"],
+ steps:["Rau ngót nhặt lá non, rửa sạch.","Phi tỏi thơm, xào thịt bằm chín.","Thêm 600ml nước, đun sôi.","Cho rau ngót vào, đun 3-4 phút.","Nêm muối nước mắm, ăn ngay."],
+ tip:"Rau ngót chín nhanh — cho vào sau cùng để giữ màu xanh."},
+
+{name:"Xà lách trộn dầu giấm",emoji:"🥗",catcls:"eb-chay",keys:["xà lách","rau xà lách"],cat:"Chay",time:"10 phút",cal:100,diff:"Dễ",
+ desc:"Salad xà lách đơn giản thanh nhẹ, dầu giấm kiểu Pháp.",
+ ings:["200g xà lách","cà chua bi","dưa leo","dầu olive","giấm táo","mật ong","muối tiêu"],
+ steps:["Xà lách rửa sạch, vẩy khô, xé miếng vừa.","Cà chua bi bổ đôi, dưa leo thái lát mỏng.","Pha dressing: dầu olive, giấm táo, mật ong, muối tiêu.","Trộn đều rau với dressing trước 5 phút ăn.","Có thể thêm bánh mì crouton giòn."],
+ tip:"Rau phải thật khô nước để dressing bám đều không bị loãng."},
+
+// ─── GIA VỊ / THẢO MỘC LÀNG MÓN ───
+{name:"Súp khổ qua nhồi thịt",emoji:"🫑",catcls:"eb-man",keys:["khổ qua","mướp đắng"],cat:"Mặn",time:"35 phút",cal:220,diff:"Trung bình",
+ desc:"Khổ qua nhồi thịt ngọt thanh, vị đắng hòa quyện bổ dưỡng.",
+ ings:["3 quả khổ qua","200g thịt heo bằm","nấm mèo","miến","trứng","nước mắm","tiêu","hành lá"],
+ steps:["Khổ qua cắt khúc 6-7cm, bỏ ruột.","Trộn nhân: thịt bằm, nấm, miến, trứng, nước mắm, tiêu.","Nhồi nhân vào khổ qua.","Hầm trong nước dùng 25-30 phút.","Nêm vừa ăn, rắc hành lá. Ăn với cơm."],
+ tip:"Trần khổ qua qua nước sôi 1 phút trước khi nhồi giúp bớt đắng."},
+
+{name:"Mướp hương xào trứng",emoji:"🥒",catcls:"eb-man",keys:["mướp","mướp hương"],cat:"Mặn",time:"12 phút",cal:160,diff:"Dễ",
+ desc:"Mướp xào trứng nhanh gọn ngọt mát.",
+ ings:["2 quả mướp hương","2 quả trứng","tỏi","muối","dầu ăn","hành lá"],
+ steps:["Mướp gọt vỏ, cắt lát vừa ăn.","Trứng đánh đều với chút muối.","Chiên trứng chín, xúc ra để riêng.","Phi tỏi, xào mướp 3-4 phút đến mềm.","Cho trứng vào đảo nhẹ, nêm muối, rắc hành lá."],
+ tip:"Mướp sẽ tự ra nước khi xào nên không cần thêm nước."},
+
+{name:"Canh bầu tôm",emoji:"🫙",catcls:"eb-man",keys:["bầu","bí bầu"],cat:"Mặn",time:"20 phút",cal:140,diff:"Dễ",
+ desc:"Canh bầu tôm thanh mát ngọt nhẹ dễ làm.",
+ ings:["1/2 quả bầu","100g tôm tươi","hành lá","muối","nước mắm","tiêu"],
+ steps:["Bầu gọt vỏ, cắt khối hoặc nửa vầng trăng.","Tôm bóc vỏ, bỏ chỉ.","Đun sôi nước, cho bầu vào nấu 8-10 phút.","Cho tôm vào, nấu thêm 3 phút.","Nêm muối nước mắm, rắc hành lá và tiêu."],
+ tip:"Bầu có vị ngọt tự nhiên — không cần dùng bột nêm vẫn ngon."},
+
+{name:"Canh bí xanh thịt băm",emoji:"🟩",catcls:"eb-man",keys:["bí xanh","bí"],cat:"Mặn",time:"20 phút",cal:150,diff:"Dễ",
+ desc:"Canh bí xanh thanh mát giải nhiệt, ngọt dịu tự nhiên.",
+ ings:["400g bí xanh","100g thịt heo bằm","tỏi","nước mắm","muối","hành lá"],
+ steps:["Bí xanh gọt vỏ, bỏ ruột hạt, cắt khối vuông.","Phi tỏi thơm, xào thịt bằm chín.","Thêm nước, đun sôi.","Cho bí vào nấu 12-15 phút đến mềm.","Nêm nước mắm muối, rắc hành lá."],
+ tip:"Bí xanh non mềm hơn và ngọt hơn bí già."},
+
+// ─── ĐẬU CÁC LOẠI ───
+{name:"Đậu hũ non sốt gừng hành",emoji:"🥣",catcls:"eb-chay",keys:["đậu hũ non","đậu phụ non"],cat:"Chay",time:"15 phút",cal:160,diff:"Dễ",
+ desc:"Đậu hũ non mềm mịn chan sốt gừng hành thơm nhẹ.",
+ ings:["400g đậu hũ non","2 thìa nước tương","1 thìa dầu mè","gừng sợi","hành lá","tỏi phi vàng"],
+ steps:["Đậu hũ non đặt cẩn thận ra đĩa hoặc bát.","Pha sốt: nước tương, dầu mè, chút đường.","Phi tỏi vàng giòn trong dầu.","Rải gừng sợi lên đậu, chan sốt vào.","Rưới dầu tỏi nóng lên trên, rắc hành lá."],
+ tip:"Đậu hũ non rất mỏng manh — thao tác nhẹ nhàng tránh vỡ nát."},
+
+{name:"Đậu đen nấu chè",emoji:"🫘",catcls:"eb-ngot",keys:["đậu đen"],cat:"Ngọt",time:"60 phút",cal:250,diff:"Dễ",
+ desc:"Chè đậu đen mát lành bổ máu, vị ngọt thanh dịu nhẹ.",
+ ings:["200g đậu đen","đường phèn","gừng tươi","muối","nước cốt dừa"],
+ steps:["Đậu đen ngâm qua đêm 8-10 tiếng.","Nấu đậu với nước cho đến mềm bở, khoảng 40-50 phút.","Thêm đường phèn và gừng thái lát.","Nấu thêm 10 phút cho đường tan.","Múc ra chén, rưới ít nước cốt dừa lên trên."],
+ tip:"Ngâm đậu qua đêm rút ngắn thời gian nấu đáng kể."},
+
+{name:"Đậu xanh nấu cháo",emoji:"🟢",catcls:"eb-man",keys:["đậu xanh"],cat:"Mặn",time:"45 phút",cal:220,diff:"Dễ",
+ desc:"Cháo đậu xanh bổ dưỡng mát lành, phù hợp người ốm.",
+ ings:["100g đậu xanh cả vỏ","80g gạo","gừng","muối","hành lá","dầu mè"],
+ steps:["Đậu xanh vo sạch, ngâm 2-3 tiếng.","Gạo vo sạch.","Cho đậu và gạo vào nồi, thêm nước và gừng, đun sôi.","Hạ lửa nhỏ, nấu 35-40 phút đến nhuyễn.","Nêm muối, rắc hành lá, vài giọt dầu mè."],
+ tip:"Đậu xanh cả vỏ thơm và bổ hơn đậu xanh bỏ vỏ."},
+
+{name:"Chè đậu trắng nước cốt dừa",emoji:"🤍",catcls:"eb-ngot",keys:["đậu trắng","đậu cô ve"],cat:"Ngọt",time:"60 phút",cal:280,diff:"Dễ",
+ desc:"Chè đậu trắng nước cốt dừa thơm béo ngọt dịu.",
+ ings:["200g đậu trắng","đường","nước cốt dừa","muối","pandan hoặc lá dứa"],
+ steps:["Đậu ngâm nước 8 tiếng hoặc qua đêm.","Nấu đậu đến mềm bở khoảng 40-50 phút với lá dứa.","Thêm đường, nấu thêm 10 phút.","Đun nước cốt dừa với muối ấm.","Múc chè ra chén, chan nước cốt dừa."],
+ tip:"Lá dứa tạo hương thơm đặc trưng cho chè."},
+
+// ─── GẠO / BỘT ───
+{name:"Cơm chiên dương châu",emoji:"🍳",catcls:"eb-man",keys:["cơm nguội","cơm","gạo"],cat:"Mặn",time:"15 phút",cal:420,diff:"Dễ",
+ desc:"Cơm chiên kinh điển thơm ngon tận dụng cơm thừa.",
+ ings:["2 chén cơm nguội","2 quả trứng","xúc xích hoặc thịt","hành lá","dầu ăn","nước mắm","nước tương","tiêu"],
+ steps:["Đập trứng vào cơm nguội, trộn đều.","Làm nóng chảo dầu lửa lớn, cho hành thái nhỏ vào phi.","Cho xúc xích hoặc thịt vào xào sơ.","Đổ cơm trứng vào, dàn phẳng — đừng đảo ngay.","Khi mặt dưới ráo vàng, xúc lên đảo đều. Nêm nước mắm, tiêu."],
+ tip:"Cơm nguội lạnh tủ lạnh qua đêm chiên ngon nhất, hạt tơi không dính."},
+
+{name:"Xôi gấc",emoji:"🔴",catcls:"eb-man",keys:["gạo nếp","nếp","xôi"],cat:"Mặn",time:"60 phút",cal:380,diff:"Trung bình",
+ desc:"Xôi gấc đỏ may mắn thơm béo, không thể thiếu trong lễ tết.",
+ ings:["300g gạo nếp","1/2 quả gấc","nước cốt dừa","đường","muối"],
+ steps:["Gạo nếp vo sạch ngâm 4-6 tiếng.","Lấy thịt gấc, lọc lấy phần đỏ, trộn với chút rượu trắng.","Trộn gạo nếp với thịt gấc, nước cốt dừa, đường, muối.","Hấp cách thủy 45-50 phút đến xôi chín dẻo.","Đảo nhẹ, hấp thêm 10 phút."],
+ tip:"Trộn thịt gấc đều với gạo trước khi hấp giúp màu đỏ đều đẹp."},
+
+{name:"Bánh cuốn nhân thịt",emoji:"🫔",catcls:"eb-man",keys:["bột gạo","bột tráng bánh"],cat:"Mặn",time:"45 phút",cal:300,diff:"Trung bình",
+ desc:"Bánh cuốn hấp mỏng mềm, nhân thịt mộc nhĩ thơm ngon.",
+ ings:["200g bột gạo","100g thịt heo bằm","nấm mèo","hành tím","nước mắm","dầu mè","hành phi"],
+ steps:["Pha bột gạo với nước loãng, để nghỉ 30 phút.","Xào thịt bằm với nấm, hành tím, nước mắm làm nhân.","Tráng bột thành lớp mỏng trên chảo hấp.","Khi bột trong, đặt nhân vào cuộn lại.","Rắc hành phi, dùng với nước mắm pha."],
+ tip:"Bột phải thật loãng để bánh mỏng mịn trong suốt như lụa."},
+
+{name:"Bánh bèo tôm chấy",emoji:"🍡",catcls:"eb-man",keys:["bột gạo"],cat:"Mặn",time:"40 phút",cal:260,diff:"Trung bình",
+ desc:"Bánh bèo Huế mềm mịn, phủ tôm chấy và mỡ hành thơm.",
+ ings:["200g bột gạo","100g tôm khô xay","hành lá","mỡ heo","nước mắm"],
+ steps:["Pha bột gạo với nước có pha chút muối, để nghỉ 20 phút.","Đổ bột vào chén nhỏ, hấp 8-10 phút đến trong.","Tôm khô rang giòn, xay mịn làm tôm chấy.","Phi hành lá trong mỡ làm mỡ hành.","Bày bánh ra, rắc tôm chấy và chan mỡ hành."],
+ tip:"Chén bánh bèo phải nguội hơi rồi mới dễ lấy ra không vỡ."},
+
+{name:"Mì xào bò",emoji:"🍝",catcls:"eb-man",keys:["mì","mì tươi","mì trứng"],cat:"Mặn",time:"20 phút",cal:480,diff:"Dễ",
+ desc:"Mì xào bò tươi sần sật đầy màu sắc.",
+ ings:["200g mì tươi","200g thịt bò","rau cải","hành tây","tỏi","dầu hào","nước tương","tiêu"],
+ steps:["Trụng mì qua nước sôi, vớt ra để ráo.","Bò thái lát, ướp dầu hào nước tương tiêu.","Xào bò nhanh lửa lớn, xúc ra.","Xào tỏi hành tây rau cải.","Cho mì và bò vào, đảo đều với dầu hào. Nêm lại."],
+ tip:"Mì phải ráo nước tốt khi xào mới không bị dính và nhão."},
+
+{name:"Bún thịt nướng",emoji:"🍱",catcls:"eb-man",keys:["bún","bún tươi"],cat:"Mặn",time:"40 phút",cal:460,diff:"Trung bình",
+ desc:"Bún thịt nướng đặc trưng Hội An, thơm sả đậm đà.",
+ ings:["300g bún tươi","300g thịt heo","sả","tỏi","nước mắm","đường","rau sống","đồ chua","nước mắm pha"],
+ steps:["Ướp thịt với sả tỏi băm, nước mắm, đường 2-3 tiếng.","Nướng thịt than hoặc lò đến vàng thơm.","Thái thịt thành lát mỏng.","Trụng bún tươi qua nước sôi.","Bày bún ra tô, xếp thịt, rau sống, đồ chua, chan nước mắm."],
+ tip:"Nướng trên than hoa tạo mùi khói đặc trưng không thể thay thế."},
+
+// ─── TRÁI CÂY MÓN ĂN ───
+{name:"Gỏi xoài tôm thịt",emoji:"🥭",catcls:"eb-man",keys:["xoài"],cat:"Mặn",time:"20 phút",cal:220,diff:"Dễ",
+ desc:"Gỏi xoài chua ngọt giòn tươi, kết hợp tôm thịt đậm đà.",
+ ings:["2 quả xoài xanh","100g tôm luộc","100g thịt heo luộc","rau thơm","tỏi ớt","nước mắm chanh đường","đậu phộng rang"],
+ steps:["Xoài bào sợi, ngâm nước muối loãng 10 phút rồi vớt ráo.","Tôm bóc vỏ, thịt thái lát mỏng.","Pha nước trộn gỏi: nước mắm chanh đường tỏi ớt.","Trộn xoài, tôm, thịt, rau thơm với nước chấm.","Rắc đậu phộng rang lên trên."],
+ tip:"Xoài chua giòn vừa phải (không quá xanh) tạo độ cân bằng tốt nhất."},
+
+{name:"Chè trái cây thập cẩm",emoji:"🍡",catcls:"eb-ngot",keys:["trái cây","dưa hấu","thơm","ổi"],cat:"Ngọt",time:"15 phút",cal:180,diff:"Dễ",
+ desc:"Chè trái cây mát lạnh thạch dừa nước cốt dừa nhiều màu.",
+ ings:["dưa hấu","thơm","nhãn","thạch dừa","nước cốt dừa","đường","đá bào"],
+ steps:["Trái cây gọt vỏ, cắt miếng nhỏ đồng đều.","Thạch dừa cắt hạt lựu.","Pha nước cốt dừa với đường và muối ít, đun ấm tan đường, để nguội.","Cho trái cây và thạch vào ly, đổ nước cốt dừa vào.","Thêm đá bào hoặc đá viên."],
+ tip:"Trái cây ướp lạnh trước giúp chè mát lâu hơn."},
+
+{name:"Sinh tố ổi đỏ",emoji:"🍎",catcls:"eb-uong",keys:["ổi","ổi đỏ"],cat:"Đồ uống",time:"5 phút",cal:130,diff:"Dễ",
+ desc:"Sinh tố ổi đỏ đặc ngọt giàu vitamin C.",
+ ings:["2 quả ổi đỏ chín","150ml nước","2 thìa đường","đá viên","muối"],
+ steps:["Ổi rửa sạch, bổ tư bỏ hạt.","Cho vào máy xay với nước và đường.","Thêm chút muối và đá.","Xay mịn.","Rót qua rây vào ly, uống ngay."],
+ tip:"Chút muối tôn thêm vị ngọt của ổi."},
+
+{name:"Nước dừa tắc",emoji:"🥥",catcls:"eb-uong",keys:["dừa","nước dừa","tắc"],cat:"Đồ uống",time:"5 phút",cal:90,diff:"Dễ",
+ desc:"Nước dừa tươi vắt tắc chua ngọt mát giải nhiệt.",
+ ings:["1 trái dừa tươi","4 quả tắc","đường","muối","đá"],
+ steps:["Dừa đục lấy nước.","Vắt tắc lấy nước cốt.","Hoà nước dừa với đường và muối ít.","Cho đá vào ly, đổ hỗn hợp vào.","Thêm nước cốt tắc, khuấy đều và uống."],
+ tip:"Tắc cho vào từ từ, vắt vừa đủ chua không bị gắt."},
+
+{name:"Mứt me",emoji:"🍬",catcls:"eb-ngot",keys:["me","me chín"],cat:"Ngọt",time:"30 phút",cal:220,diff:"Dễ",
+ desc:"Mứt me chua ngọt mặn đặc trưng, ăn vặt không thể thiếu.",
+ ings:["200g me chín bóc vỏ","150g đường","muối","ớt bột","gừng bột"],
+ steps:["Me bóc vỏ, bỏ hạt, vò tơi.","Cho vào chảo cùng đường, đun lửa nhỏ.","Khuấy liên tục đến me mềm và sánh lại với đường.","Thêm muối, ớt bột, gừng bột theo khẩu vị.","Để nguội, nặn thành viên nhỏ hoặc để nguyên."],
+ tip:"Me càng chua ngọt cân bằng, mứt càng ngon."},
+
+// ─── THÊM GIA DỤNG / SNACK ───
+{name:"Khoai lang nướng",emoji:"🍠",catcls:"eb-vat",keys:["khoai lang"],cat:"Ăn vặt",time:"40 phút",cal:190,diff:"Dễ",
+ desc:"Khoai lang nướng mật ngọt đậm, vỏ giòn ruột bở.",
+ ings:["4 củ khoai lang vừa","muối"],
+ steps:["Rửa sạch khoai lang, không cần gọt vỏ.","Cắm vài lỗ quanh củ bằng nĩa.","Nướng lò 200°C trong 40-45 phút.","Kiểm tra bằng cách xiên đũa — mềm là chín.","Rạch đôi, có thể thêm bơ và muối."],
+ tip:"Khoai lang tím có vị ngọt đặc trưng khác với khoai vàng."},
+
+{name:"Khoai lang luộc",emoji:"🍠",catcls:"eb-vat",keys:["khoai lang"],cat:"Ăn vặt",time:"20 phút",cal:160,diff:"Dễ",
+ desc:"Khoai lang luộc đơn giản nhất, ngọt bở tự nhiên.",
+ ings:["4 củ khoai lang","muối","nước"],
+ steps:["Rửa sạch khoai, có thể gọt vỏ hoặc để nguyên.","Cắt khúc vừa ăn nếu to.","Cho vào nồi nước lạnh, thêm muối.","Đun sôi, luộc 15-20 phút đến mềm.","Vớt ra để ráo, ăn nóng."],
+ tip:"Cho muối vào nước luộc giúp khoai đậm vị hơn."},
+
+{name:"Sắn luộc chấm muối mè",emoji:"🌰",catcls:"eb-vat",keys:["sắn","khoai mì"],cat:"Ăn vặt",time:"30 phút",cal:200,diff:"Dễ",
+ desc:"Sắn luộc mềm dẻo chấm muối mè thơm bùi.",
+ ings:["500g sắn tươi","muối","vừng rang","dừa nạo"],
+ steps:["Sắn gọt vỏ nâu và lớp vỏ trắng, cắt khúc.","Ngâm nước 30 phút cho bớt độc.","Luộc nước sôi 25-30 phút đến mềm dẻo.","Pha muối mè: muối, vừng rang, dừa nạo trộn đều.","Ăn nóng chấm muối mè."],
+ tip:"Ngâm nước giúp giảm acid cyanhydric trong sắn — quan trọng!"},
+
+{name:"Bánh chuối hấp",emoji:"🍌",catcls:"eb-ngot",keys:["chuối","bột gạo","bột năng"],cat:"Ngọt",time:"40 phút",cal:260,diff:"Dễ",
+ desc:"Bánh chuối hấp mềm dẻo thơm béo nước cốt dừa.",
+ ings:["4 quả chuối chín","150g bột năng","200ml nước cốt dừa","đường","muối","vừng rang"],
+ steps:["Chuối bóc vỏ, cắt lát chéo.","Pha bột năng với nước cốt dừa, đường, muối thành bột lỏng.","Xếp chuối vào khuôn, đổ bột lên.","Hấp cách thủy 25-30 phút đến bột trong.","Để nguội rắc vừng rang."],
+ tip:"Bột năng làm bánh trong mịn đẹp hơn bột gạo."},
+
+// ─── THÊM ĐỒ UỐNG ───
+{name:"Trà gừng mật ong",emoji:"🍵",catcls:"eb-uong",keys:["gừng","mật ong","trà"],cat:"Đồ uống",time:"10 phút",cal:70,diff:"Dễ",
+ desc:"Trà gừng ấm áp tốt cho tiêu hóa, chống cảm lạnh.",
+ ings:["5-6 lát gừng tươi","2 thìa mật ong","1 túi trà hoặc 1 thìa trà xanh","300ml nước sôi","chanh"],
+ steps:["Đun sôi nước với gừng 5 phút.","Cho trà vào hãm 3 phút.","Vớt bỏ gừng và túi trà.","Thêm mật ong khi trà còn ấm (không nóng).","Vắt vài giọt chanh, uống ấm."],
+ tip:"Không thêm mật ong vào nước quá nóng để giữ nguyên dưỡng chất."},
+
+{name:"Cà phê sữa đá",emoji:"☕",catcls:"eb-uong",keys:["cà phê"],cat:"Đồ uống",time:"5 phút",cal:120,diff:"Dễ",
+ desc:"Cà phê phin Việt đặc sánh chan sữa đặc, uống với đá.",
+ ings:["2 thìa cà phê rang xay","nước sôi 90°C","sữa đặc","đá viên"],
+ steps:["Tráng phin bằng nước nóng.","Cho cà phê vào phin, đặt nắp chặn giữ nhiệt.","Cho 30ml nước sôi vào, đợi 30 giây.","Đổ tiếp 100ml nước, đợi 4-5 phút phin nhỏ giọt hết.","Cho sữa đặc vào ly đá, đổ cà phê vào, khuấy đều."],
+ tip:"Nước 90°C (không sôi 100°C) cho cà phê ngon nhất, không đắng."},
+
+{name:"Sinh tố thanh long",emoji:"🐉",catcls:"eb-uong",keys:["thanh long"],cat:"Đồ uống",time:"5 phút",cal:120,diff:"Dễ",
+ desc:"Sinh tố thanh long đỏ đẹp mắt mát lạnh bổ dưỡng.",
+ ings:["1 quả thanh long đỏ","150ml sữa dừa","1 thìa mật ong","đá viên"],
+ steps:["Thanh long bổ đôi, nạo thịt ra.","Cho vào máy xay với sữa dừa.","Thêm mật ong và đá.","Xay mịn đều.","Rót ra ly, uống ngay."],
+ tip:"Thanh long đỏ có màu đẹp hơn và ngọt hơn thanh long trắng."},
+
+{name:"Nước chanh dây",emoji:"🍹",catcls:"eb-uong",keys:["chanh dây","chanh leo"],cat:"Đồ uống",time:"5 phút",cal:80,diff:"Dễ",
+ desc:"Nước chanh dây chua ngọt thơm lừng giải khát cực đỉnh.",
+ ings:["4 quả chanh dây","đường","nước","đá"],
+ steps:["Bổ đôi chanh dây, múc thịt ra bát.","Pha syrup đường với nước nóng, để nguội.","Cho chanh dây vào ly, thêm syrup theo khẩu vị.","Thêm nước và đá.","Khuấy đều và uống ngay."],
+ tip:"Không lọc hạt — hạt chanh dây làm nước trông đẹp và tự nhiên hơn."},
+
+// ─── THÊM MÓN TRÁNG MIỆNG ───
+{name:"Chè bà ba",emoji:"🍮",catcls:"eb-ngot",keys:["khoai lang","khoai tây","bột năng"],cat:"Ngọt",time:"40 phút",cal:280,diff:"Dễ",
+ desc:"Chè bà ba Nam Bộ với đủ loại khoai và nước cốt dừa.",
+ ings:["100g khoai lang","100g khoai môn","50g bột năng","đường","nước cốt dừa","muối"],
+ steps:["Khoai lang và khoai môn gọt vỏ cắt khối, luộc sơ.","Bột năng nhào với nước thành bột dẻo, nặn viên nhỏ.","Đun nước đường sôi, thả viên bột và khoai vào.","Nấu đến khi viên bột nổi và trong suốt.","Đun nước cốt dừa với muối, chan lên chè."],
+ tip:"Khoai môn tím tạo màu đẹp đặc trưng cho chè bà ba."},
+
+{name:"Kem dừa tươi",emoji:"🍦",catcls:"eb-ngot",keys:["dừa","nước cốt dừa"],cat:"Ngọt",time:"30 phút",cal:320,diff:"Trung bình",
+ desc:"Kem dừa tươi béo ngậy làm từ dừa thật không cần máy.",
+ ings:["400ml nước cốt dừa","100g đường","2 quả trứng (lòng đỏ)","muối","vani"],
+ steps:["Đánh lòng đỏ trứng với đường bông nhạt.","Đun nước cốt dừa ấm 60°C, từ từ đổ vào trứng khuấy đều.","Đun hỗn hợp ở lửa nhỏ đến sánh kem (82°C).","Để nguội, thêm vani, đổ vào hộp đông lạnh.","Sau 2 tiếng lấy ra dùng thìa khuấy trộn, đông tiếp 4 tiếng."],
+ tip:"Khuấy kem trong quá trình đông giúp kem mịn không có tinh thể đá."},
+
+// ─── GÀ NẤU THÊM ───
+{name:"Gà ủ muối",emoji:"🧂",catcls:"eb-man",keys:["gà"],cat:"Mặn",time:"90 phút",cal:380,diff:"Trung bình",
+ desc:"Gà ủ muối vàng óng da giòn thịt mềm ngọt đặc trưng.",
+ ings:["1/2 con gà","muối hạt","lá chanh","sả","gừng","tiêu hạt"],
+ steps:["Rửa gà sạch, thấm khô hoàn toàn.","Pha hỗn hợp muối, lá chanh, sả, gừng, tiêu xay thô.","Phết muối đều khắp gà kể cả bên trong.","Bọc gà trong giấy bạc hoặc đặt vào nồi muối rang.","Ủ trong muối rang nóng 60-70 phút, kiểm tra chín."],
+ tip:"Gà phải thật khô nước để muối thấm đều và da vàng đẹp."},
+
+{name:"Gà hầm nấm đông cô",emoji:"🍄",catcls:"eb-man",keys:["gà","nấm","nấm đông cô"],cat:"Mặn",time:"60 phút",cal:360,diff:"Dễ",
+ desc:"Gà hầm nấm đông cô thơm đậm đà bổ dưỡng.",
+ ings:["500g gà","100g nấm đông cô khô","hành tây","tỏi","nước dùng","nước tương","đường"],
+ steps:["Nấm đông cô ngâm nước ấm 30 phút, vắt ráo, giữ lại nước ngâm.","Gà chặt miếng, xào vàng sơ.","Phi hành tỏi thơm, cho gà vào.","Thêm nấm, nước dùng, nước ngâm nấm lọc.","Hầm 40 phút. Nêm nước tương đường."],
+ tip:"Nước ngâm nấm đông cô rất thơm — đừng đổ đi, lọc và dùng làm nước hầm."},
+
+// ─── CÁ THÊM ───
+{name:"Canh cá bông lau",emoji:"🐟",catcls:"eb-man",keys:["cá bông lau","cá tra","cá ba sa"],cat:"Mặn",time:"20 phút",cal:210,diff:"Dễ",
+ desc:"Canh cá ngọt thanh với thì là và cà chua.",
+ ings:["400g cá bông lau","2 cà chua","thì là","hành lá","gừng","nước mắm","muối"],
+ steps:["Cá làm sạch thái khúc, ướp gừng muối 10 phút.","Cà chua bổ múi, phi hành thơm rồi xào cà chua.","Thêm nước đun sôi.","Cho cá vào, đun 8-10 phút.","Nêm nước mắm, thêm thì là hành lá."],
+ tip:"Thì là là hương liệu không thể thiếu trong canh cá miền Bắc."},
+
+{name:"Cá lóc nướng trui",emoji:"🔥",catcls:"eb-man",keys:["cá lóc"],cat:"Mặn",time:"30 phút",cal:290,diff:"Dễ",
+ desc:"Cá lóc nướng nguyên con đặc sản miền Tây Nam Bộ.",
+ ings:["1 con cá lóc","sả","tỏi","ớt","muối","rau sống các loại","bánh tráng","nước mắm pha"],
+ steps:["Cá lóc rửa sạch không cần mổ, nhét sả gừng vào bụng.","Xiên cây tre qua miệng đến đuôi.","Nướng trực tiếp trên lửa than 25-30 phút xoay đều.","Cạo bỏ vỏ cháy, lấy thịt bên trong.","Cuốn với bánh tráng, rau sống chấm nước mắm."],
+ tip:"Nướng trui cả con giúp thịt cá ngọt và không tanh."},
+
+// ─── MÓN ĐÔNG NAM Á / FUSION ───
+{name:"Cơm gà Hải Nam",emoji:"🍚",catcls:"eb-man",keys:["gà","gạo"],cat:"Mặn",time:"60 phút",cal:520,diff:"Trung bình",
+ desc:"Cơm gà Hải Nam nổi tiếng với cơm thơm béo và nước chấm đặc biệt.",
+ ings:["1/2 con gà","gạo","gừng","tỏi","hành lá","dầu mè","nước tương","ớt xanh","nước mắm"],
+ steps:["Luộc gà với gừng hành đến chín, vớt ra ngâm nước lạnh.","Phi tỏi gừng trong dầu, cho gạo vào xào.","Đổ nước luộc gà vào gạo, nấu cơm bình thường.","Gà thái lát, xếp lên cơm.","Pha nước chấm gừng tỏi nước tương, ăn kèm súp gà."],
+ tip:"Ngâm gà nước lạnh sau luộc giúp da săn bóng, thịt mọng."},
+
+{name:"Pad Thai bún gạo",emoji:"🍜",catcls:"eb-man",keys:["bún","bún gạo","tôm"],cat:"Mặn",time:"25 phút",cal:440,diff:"Trung bình",
+ desc:"Pad Thai kiểu Thái ngọt chua mặn đặc trưng.",
+ ings:["200g bún gạo","100g tôm","2 trứng","đậu phụ","giá đỗ","hành lá","nước me","nước mắm","đường","tương ớt","đậu phộng rang"],
+ steps:["Ngâm bún gạo trong nước ấm 20 phút.","Xào tỏi thơm, cho tôm và đậu phụ vào.","Đẩy sang một bên, đổ trứng vào xào lộn.","Cho bún và nước me, nước mắm, đường vào đảo đều.","Thêm giá đỗ hành lá, rắc đậu phộng rang."],
+ tip:"Lửa lớn và chảo nóng là bí quyết của Pad Thai thơm ngon."},
+
+{name:"Canh Miso đậu phụ",emoji:"🍵",catcls:"eb-chay",keys:["miso","đậu phụ"],cat:"Chay",time:"15 phút",cal:120,diff:"Dễ",
+ desc:"Canh miso truyền thống Nhật đơn giản nhanh chóng.",
+ ings:["2 thìa tương miso","300g đậu phụ non","rong biển wakame khô","hành lá","600ml nước dùng dashi hoặc nước"],
+ steps:["Đun nước dùng hoặc nước sôi.","Wakame ngâm nước 5 phút, vắt ráo.","Đậu phụ cắt khối nhỏ.","Cho wakame và đậu phụ vào nước.","Hoà miso với ít nước súp, đổ vào, không đun sôi lại. Rắc hành lá."],
+ tip:"Không đun miso sau khi cho vào canh sẽ mất hết probiotic tốt."},
+
+{name:"Bánh mì kẹp thịt BBQ",emoji:"🥪",catcls:"eb-man",keys:["bánh mì"],cat:"Mặn",time:"20 phút",cal:480,diff:"Dễ",
+ desc:"Bánh mì kẹp thịt nướng sốt BBQ đơn giản ngon miệng.",
+ ings:["2 ổ bánh mì","200g thịt heo hoặc gà","sốt BBQ","rau xà lách","cà chua","dưa leo","mayonnaise"],
+ steps:["Thịt ướp sốt BBQ 20 phút, nướng chín thái lát.","Xẻ bánh mì ra, nướng giòn sơ.","Phết mayonnaise lên bánh.","Xếp rau cải, cà chua, dưa leo, thịt vào.","Thêm sốt BBQ, kẹp lại và ăn ngay."],
+ tip:"Nướng bánh mì giòn sơ giúp không bị ỉu khi kẹp nhân ướt."},
+];
+
+// Merge databases
+const DB_ALL = [...DB, ...DB_EXT];
+
+// ══════════════════════════════════════════════
+// STATE & NAV
+// ══════════════════════════════════════════════
+let navHistory=['home'], ingredients=[], filteredCat='Tất cả';
+
+function goTo(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  window.scrollTo(0,0);
+  document.getElementById('back-btn').style.display=id==='home'?'none':'block';
+  if(navHistory[navHistory.length-1]!==id) navHistory.push(id);
+}
+function goBack(){ if(navHistory.length>1){navHistory.pop();goTo(navHistory.pop())} }
+function toggleTheme(){
+  document.body.setAttribute('data-theme',
+    document.body.getAttribute('data-theme')==='dark'?'':'dark');
+}
+
+// ── ingredients ──
+function qs(name){document.getElementById('ing-input').value=name;addIng()}
+function addIng(){
+  const inp=document.getElementById('ing-input'),val=inp.value.trim();
+  if(!val)return;
+  val.split(',').map(s=>s.trim()).filter(Boolean).forEach(p=>{
+    if(!ingredients.some(i=>i.toLowerCase()===p.toLowerCase()))ingredients.push(p);
+  });
+  inp.value='';renderTags();
+}
+function removeIng(name){
+  ingredients=ingredients.filter(i=>i!==name);renderTags();
+  document.getElementById('results-panel').classList.remove('visible');
+}
+function renderTags(){
+  const row=document.getElementById('tag-row'),btn=document.getElementById('find-btn');
+  row.innerHTML=ingredients.length===0
+    ?'<span style="color:var(--muted);font-size:.88rem;font-weight:600">Chưa có nguyên liệu nào...</span>'
+    :ingredients.map(i=>`<div class="ing-tag">${i}<button onclick="removeIng('${i.replace(/'/g,"\\'")}')">×</button></div>`).join('');
+  btn.disabled=ingredients.length===0;
+}
+
+// ── search ──
+function normalize(s){
+  return s.toLowerCase()
+    .replace(/thịt\s*lợn/g,'thịt heo').replace(/thịt\s*gà/g,'gà')
+    .replace(/trứng\s*gà/g,'trứng').replace(/thịt\s*bằm/g,'thịt bằm').trim();
+}
+function findDishes(){
+  const panel=document.getElementById('results-panel');
+  panel.classList.add('visible');
+  const normIngs=ingredients.map(normalize);
+  const matched=DB_ALL.filter(r=>r.keys.some(k=>normIngs.some(ni=>ni.includes(k)||k.includes(ni))));
+  matched.sort((a,b)=>{
+    const aS=a.keys.filter(k=>normIngs.some(ni=>ni.includes(k)||k.includes(ni))).length;
+    const bS=b.keys.filter(k=>normIngs.some(ni=>ni.includes(k)||k.includes(ni))).length;
+    return bS-aS;
+  });
+  document.getElementById('rp-count').textContent=matched.length+' món';
+  if(!matched.length){
+    document.getElementById('rp-filter').innerHTML='';
+    document.getElementById('rp-grid').innerHTML='<div class="empty-hint">😕 Chưa tìm thấy món phù hợp. Thử thêm nguyên liệu khác nhé!</div>';
+    return;
+  }
+  const cats=['Tất cả',...new Set(matched.map(r=>r.cat))];
+  filteredCat='Tất cả';
+  document.getElementById('rp-filter').innerHTML=cats.map(c=>
+    `<span class="filter-chip${c===filteredCat?' active':''}" onclick="filterCat('${c}')">${c}</span>`
+  ).join('');
+  renderGrid(matched);
+  panel.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function filterCat(cat){
+  filteredCat=cat;
+  document.querySelectorAll('.filter-chip').forEach(el=>el.classList.toggle('active',el.textContent===cat));
+  const normIngs=ingredients.map(normalize);
+  const matched=DB_ALL.filter(r=>r.keys.some(k=>normIngs.some(ni=>ni.includes(k)||k.includes(ni))));
+  renderGrid(cat==='Tất cả'?matched:matched.filter(r=>r.cat===cat));
+}
+function getCatCls(cat){
+  return {'Mặn':'eb-man','Chay':'eb-chay','Ngọt':'eb-ngot','Đồ uống':'eb-uong','Ăn vặt':'eb-vat','Sáng':'eb-sang'}[cat]||'eb-man';
+}
+function renderGrid(recipes){
+  const grid=document.getElementById('rp-grid');
+  if(!recipes.length){grid.innerHTML='<div class="empty-hint">Không có món nào trong danh mục này.</div>';return}
+  grid.innerHTML=recipes.map(r=>`
+<div class="rc" onclick="showDetail(${DB_ALL.indexOf(r)})">
+  <div class="rc-emoji-banner ${r.catcls||getCatCls(r.cat)}">
+    <div class="eb-circle"></div>
+    <span class="eb-icon">${r.emoji||'🍽️'}</span>
+  </div>
+  <div class="rc-body">
+    <h4>${r.name}</h4>
+    <p>${r.desc}</p>
+    <div class="rc-meta">
+      <span class="badge bg">${r.cat}</span>
+      <span class="badge bw">⏱ ${r.time}</span>
+      <span class="badge" style="background:rgba(26,111,212,.1);color:var(--primary)">🔥 ${r.cal} kcal</span>
+      <span class="badge" style="background:rgba(26,111,212,.08);color:var(--primary)">${r.diff}</span>
+    </div>
+  </div>
+</div>`).join('');
+}
+function showDetail(idx){
+  const r=DB_ALL[idx],cls=r.catcls||getCatCls(r.cat);
+  document.getElementById('detail-wrap').innerHTML=`
+<div class="detail-emoji-hero ${cls}">
+  <div class="deh-circle"></div>
+  <span class="deh-icon">${r.emoji||'🍽️'}</span>
+  <div class="deh-title">
+    <h1>${r.name}</h1>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <span class="badge" style="background:rgba(255,255,255,.25);color:#fff">${r.cat}</span>
+      <span class="badge" style="background:rgba(255,255,255,.25);color:#fff">⏱ ${r.time}</span>
+      <span class="badge" style="background:rgba(255,255,255,.25);color:#fff">📊 ${r.diff}</span>
+      <span class="badge" style="background:rgba(255,255,255,.25);color:#fff">🔥 ${r.cal} kcal</span>
+    </div>
+  </div>
+</div>
+<div class="detail-section">
+  <h3>📊 Thông tin dinh dưỡng</h3>
+  <div class="nut-row">
+    <div class="nut-item"><div class="nut-val">${r.cal}</div><div class="nut-lbl">Calories</div></div>
+    <div class="nut-item"><div class="nut-val">${r.time}</div><div class="nut-lbl">Thời gian</div></div>
+    <div class="nut-item"><div class="nut-val">${r.diff}</div><div class="nut-lbl">Độ khó</div></div>
+    <div class="nut-item"><div class="nut-val">${r.cat}</div><div class="nut-lbl">Loại món</div></div>
+  </div>
+</div>
+<div class="detail-section">
+  <h3>🛒 Nguyên liệu</h3>
+  <div class="ing-list">${r.ings.map(i=>`<div class="ing-pill">${i}</div>`).join('')}</div>
+</div>
+<div class="detail-section">
+  <h3>👨‍🍳 Cách làm từng bước</h3>
+  ${r.steps.map((s,i)=>`<div class="step-item"><div class="step-num">${i+1}</div><div class="step-text">${s}</div></div>`).join('')}
+</div>
+${r.tip?`<div class="tip-box detail-section"><h3>💡 Mẹo hay</h3><p style="line-height:1.78;font-weight:500;margin-top:4px">${r.tip}</p></div>`:''}`;
+  goTo('detail');
+}
+
+// ── API key ──
+function getKey(){return localStorage.getItem('hmb_api_key')||''}
+function openModal(){document.getElementById('key-modal').style.display='flex';document.getElementById('key-input').value=getKey();document.getElementById('key-status').style.display='none'}
+function closeModal(){document.getElementById('key-modal').style.display='none'}
+function toggleKeyVis(){const i=document.getElementById('key-input');i.type=i.type==='password'?'text':'password'}
+function saveKey(){
+  const val=document.getElementById('key-input').value.trim(),st=document.getElementById('key-status');
+  if(!val){localStorage.removeItem('hmb_api_key');st.style.display='flex';st.innerHTML='<span style="width:8px;height:8px;border-radius:50%;background:#ef4444;display:inline-block"></span> Đã xoá API key';setTimeout(closeModal,1200);return}
+  if(!val.startsWith('sk-ant-')){st.style.display='flex';st.innerHTML='<span style="width:8px;height:8px;border-radius:50%;background:#ef4444;display:inline-block"></span> Key không hợp lệ';return}
+  localStorage.setItem('hmb_api_key',val);
+  st.style.display='flex';st.innerHTML='<span style="width:8px;height:8px;border-radius:50%;background:#22c55e;display:inline-block"></span> Đã lưu!';
+  setTimeout(closeModal,1200);
+}
+document.getElementById('key-modal').addEventListener('click',function(e){if(e.target===this)closeModal()});
+
+// ── AI generation ──
+async function generateWithAI(){
+  const key=getKey();if(!key){openModal();return}
+  const btn=document.getElementById('ai-gen-btn'),aiR=document.getElementById('ai-results'),aiG=document.getElementById('ai-grid');
+  btn.disabled=true;btn.innerHTML='<span style="width:20px;height:20px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite;display:inline-block"></span> AI đang tạo...';
+  aiR.style.display='block';aiG.innerHTML='<div class="ai-loading"><div class="ai-spinner"></div><p>AI đang sáng tạo công thức cho nguyên liệu của bạn...</p></div>';
+  const prompt=`Bạn là đầu bếp AI người Việt. Người dùng có các nguyên liệu: ${ingredients.join(', ')}.
+Hãy gợi ý 6-10 món ăn SÁNG TẠO có thể nấu từ các nguyên liệu đó. Ưu tiên món Việt Nam, đa dạng phong cách nấu.
+Trả về JSON THUẦN TÚY (không backtick, không markdown):
+{"recipes":[{"name":"Tên món","emoji":"🍜","cat":"Mặn/Chay/Ngọt/Đồ uống","time":"20 phút","cal":350,"diff":"Dễ","desc":"Mô tả ngắn 1-2 câu","ings":["nguyên liệu 1"],"steps":["Bước 1...","Bước 2...","Bước 3...","Bước 4...","Bước 5..."],"tip":"Mẹo nấu ăn"}]}`;
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:4000,messages:[{role:'user',content:prompt}]})});
+    if(!res.ok){const e=await res.json();throw new Error(e.error?.message||'Lỗi '+res.status)}
+    const data=await res.json(),text=data.content.map(c=>c.text||'').join('');
+    const parsed=JSON.parse(text.replace(/```json|```/g,'').trim()),recs=parsed.recipes;
+    document.getElementById('ai-count').textContent=recs.length+' món mới';
+    aiG.innerHTML=recs.map((r,i)=>`
+<div class="rc" onclick="showAIDetail(${i})">
+  <div class="rc-emoji-banner ${getCatCls(r.cat||'Mặn')}">
+    <div class="eb-circle"></div>
+    <span class="eb-icon">${r.emoji||'✨'}</span>
+  </div>
+  <div class="rc-body">
+    <h4>${r.name} <span style="font-size:.7rem;background:rgba(99,102,241,.12);color:#6366f1;border-radius:50px;padding:2px 8px;font-weight:700">AI</span></h4>
+    <p>${r.desc}</p>
+    <div class="rc-meta">
+      <span class="badge bg">${r.cat}</span>
+      <span class="badge bw">⏱ ${r.time}</span>
+      <span class="badge" style="background:rgba(26,111,212,.1);color:var(--primary)">🔥 ${r.cal} kcal</span>
+    </div>
+  </div>
+</div>`).join('');
+    window._aiRecs=recs;btn.disabled=false;btn.innerHTML='🔄 Tạo lại công thức mới';
+  }catch(err){
+    aiG.innerHTML=`<div class="ai-loading"><p style="color:#ef4444;font-weight:700">⚠️ Lỗi: ${err.message}</p></div>`;
+    btn.disabled=false;btn.innerHTML='✨ Thử lại với AI';
+  }
+}
+function showAIDetail(idx){
+  const r=window._aiRecs[idx];if(!r)return;
+  const cls=getCatCls(r.cat||'Mặn');
+  document.getElementById('detail-wrap').innerHTML=`
+<div class="detail-emoji-hero ${cls}">
+  <div class="deh-circle"></div>
+  <span class="deh-icon">${r.emoji||'✨'}</span>
+  <div class="deh-title">
+    <h1>${r.name} <span style="font-size:.75rem;background:rgba(255,255,255,.25);border-radius:50px;padding:3px 10px">✨ AI</span></h1>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <span class="badge" style="background:rgba(255,255,255,.25);color:#fff">${r.cat}</span>
+      <span class="badge" style="background:rgba(255,255,255,.25);color:#fff">⏱ ${r.time}</span>
+      <span class="badge" style="background:rgba(255,255,255,.25);color:#fff">📊 ${r.diff}</span>
+      <span class="badge" style="background:rgba(255,255,255,.25);color:#fff">🔥 ${r.cal} kcal</span>
+    </div>
+  </div>
+</div>
+<div class="detail-section"><h3>📊 Thông tin</h3>
+  <div class="nut-row">
+    <div class="nut-item"><div class="nut-val">${r.cal}</div><div class="nut-lbl">Calories</div></div>
+    <div class="nut-item"><div class="nut-val">${r.time}</div><div class="nut-lbl">Thời gian</div></div>
+    <div class="nut-item"><div class="nut-val">${r.diff}</div><div class="nut-lbl">Độ khó</div></div>
+    <div class="nut-item"><div class="nut-val">${r.cat}</div><div class="nut-lbl">Loại món</div></div>
+  </div>
+</div>
+<div class="detail-section"><h3>🛒 Nguyên liệu</h3>
+  <div class="ing-list">${r.ings.map(i=>`<div class="ing-pill">${i}</div>`).join('')}</div>
+</div>
+<div class="detail-section"><h3>👨‍🍳 Cách làm từng bước</h3>
+  ${r.steps.map((s,i)=>`<div class="step-item"><div class="step-num">${i+1}</div><div class="step-text">${s}</div></div>`).join('')}
+</div>
+${r.tip?`<div class="tip-box detail-section"><h3>💡 Mẹo hay</h3><p style="line-height:1.78;font-weight:500;margin-top:4px">${r.tip}</p></div>`:''}`;
+  goTo('detail');
+}
+</script>
+</body>
+</html>
